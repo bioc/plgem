@@ -9,4 +9,5 @@ Maintainer: Mattia Pelizzola <mattia.pelizzola@unimib.it>
 Depends: R (>= 1.9.0), Biobase, MASS
 License: GPL
 URL: http://www.genopolis.it
+biocViews: Microarray, DifferentialExpression
 
