@@ -1,11 +1,11 @@
 "plgem.fit" <-
-function(data,fit.condition=1,p=10,q=0.5,fittingEval=FALSE,plot.file=FALSE,verbose=FALSE) {
+function(data, covariateNumb=1, fit.condition=1,p=10,q=0.5,fittingEval=FALSE,plot.file=FALSE,verbose=FALSE) {
 	library(Biobase)
 	library(MASS)
 
 	# some checks..
-	if(class(data)!="exprSet") stop("Object data in function plgem.fit is not of class exprSet")
-	if(!("conditionName" %in% colnames(pData(data)))) stop("the covariate conditionName is not defined in the data exprSet")
+	if(class(data)!="ExpressionSet") stop("Object data in function plgem.fit is not of class ExpressionSet")
+	if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
 	if(class(fit.condition)!="numeric" && class(fit.condition)!="integer") stop("Argument fit.condition in function plgem.fit is not of class numeric or integer")
 	if(class(p)!="numeric" && class(p)!="integer") stop("Argument p in function plgem.fit is not of class numeric or integer")
 	if(class(q)!="numeric" && class(q)!="integer") stop("Argument q in function plgem.fit is not of class numeric or integer")
@@ -16,10 +16,11 @@ function(data,fit.condition=1,p=10,q=0.5,fittingEval=FALSE,plot.file=FALSE,verbo
 	if(verbose) cat("fitting PLGEM..","\n")
 
 	if(verbose) cat("samples extracted for fitting:","\n")
-	condition.name<-unique(as.character(data$conditionName))
-	data<-data[,which(data$conditionName==condition.name[fit.condition])]
+	condition.names<-as.character(pData(data)[,covariateNumb])
+	condition.name<-unique(condition.names)
+	data<-data[,which(condition.names==condition.name[fit.condition])]
 	if(verbose) print(pData(data))
-	row<-length(geneNames(data))
+	row<-length(featureNames(data))
 	if(length(sampleNames(data))<2) stop("At least 2 replicates needed to fit PLGEM")
 
 	# 'data' mean and standard deviation

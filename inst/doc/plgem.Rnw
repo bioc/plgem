@@ -15,7 +15,7 @@
 In this document a brief tutorial on the \textbf{Power Law Global Error Model} (plgem; N. Pavelka \textit{et. al.},
 BMC Bioinformatics, 2004 Dec 17;5(1):203) is provided.
 A \texttt{wrapper} (\textit{run.plgem}) exists that performs all the steps necessary to obtain a list of differentially
-expressed genes (DEG), starting from a dataset of class \textit{exprSet}. It automatically attempts to find the best
+expressed genes (DEG), starting from a dataset of class \textit{ExpressionSet}. It automatically attempts to find the best
 solution at each step, and requires only modest or no input decisions by the user.
 For this purpose we use the microarray dataset used in the paper, where four replicates of LPS stimulated dendritic cells
 (LPS) are compared to sixteen replicates of untreated dendritic cells (C):
@@ -53,7 +53,7 @@ A good fit is characterized by a near-normal distribution and an horizontal symm
 
 \begin{center}
 <<modelFitting,fig=TRUE,echo=TRUE>>=
-LPSfit<-plgem.fit(data = LPSeset, fit.condition = 1, p = 10, q = 0.5, plot.file = FALSE, fittingEval = TRUE, verbose = TRUE)
+LPSfit<-plgem.fit(data = LPSeset, covariateNumb = 1, fit.condition = 1, p = 10, q = 0.5, plot.file = FALSE, fittingEval = TRUE, verbose = TRUE)
 @
 \end{center}
 
@@ -62,15 +62,15 @@ of differential expression. The STN is determined using the model-derived spread
 the data-derived ones. Therefore it is necessary to give to the \textit{plgem.obsStn} function the model parameters
 \textit{slope} and \textit{intercept} determined during the model fitting that are contained in the value
 returned by \textit{plgem.fit} function.
-By default, all experimental conditions (according to the values of the covariate \textit{conditionName} defined
-in the phenoData slot of the exprSet) are compared to the first condition (baseline). If the condition to be treated
+By default, all experimental conditions (according to the values of the \textit{covariateNumb} covariate  defined
+in the phenoData slot of the ExpressionSet) are compared to the first condition (baseline). If the condition to be treated
 as the baseline is not the first one, you can change this by modifying the argument \textit{baseline.condition}.
 A matrix of observed STN is determined, where its dimensions are the number of probesets and the
 number of comparisons that can be performed in the dataset. In this case, the dataset contains only one condition to be compared to the 
 baseline, therefore the matrix is reduced to a vector of observed PLGEM-STN.
 
 <<observedSTN,echo=TRUE>>=
-LPSobsStn<-plgem.obsStn(data = LPSeset, baseline.condition = 1, plgemFit = LPSfit, verbose = TRUE)
+LPSobsStn<-plgem.obsStn(data = LPSeset, covariateNumb = 1, baseline.condition = 1, plgemFit = LPSfit, verbose = TRUE)
 @
 
 In order to get an estimate of the distribution of the test statistic under the null-hypothesis of not differential
@@ -93,7 +93,7 @@ false positives, but obviously it is not possible to know which one they are.
 This function returns a list with a number of items is equal to the number of different significance levels
 \textit{delta} used as input. In this case the default single value of 0.001 was used, so the list will contain only one item at this level.
 This item is again a list, whose number of items correspond to the number of performed comparisons, i.e. the number
-of conditions in the starting exprSet minus the baseline, in this case again only one. In each list-item the values are the observed STN and the
+of conditions in the starting ExpressionSet minus the baseline, in this case again only one. In each list-item the values are the observed STN and the
 names are the DEG probeset ids.
 
 
@@ -101,5 +101,7 @@ names are the DEG probeset ids.
 LPSdegList<-plgem.deg(observedStn = LPSobsStn, plgemResampledStn = LPSresampledStn, delta = 0.001, verbose = TRUE)
 LPSdegList[["0.001"]][["LPS"]][1:5]
 @
+
+Finally, the obtained list of DEG can be written on the disk using the \textit{plgem.write.summary} function.
 
 \end{document}

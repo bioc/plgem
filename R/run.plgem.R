@@ -1,10 +1,10 @@
 "run.plgem" <-
-function(esdata, signLev=0.001, rank=100, baselineCondition=1, Iterations="automatic", fitting.eval=TRUE, plotFile=FALSE, Verbose=FALSE) {
+function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, Iterations="automatic", fitting.eval=TRUE, plotFile=FALSE, writeFiles = FALSE, Verbose=FALSE) {
 	library(Biobase)
 
 	#some checks
-	if(class(esdata)!="exprSet") stop("Object esdata in function run.plgem is not of class exprSet")
-	if(!("conditionName" %in% colnames(pData(esdata)))) stop("the covariate conditionName is not defined in the esdata exprSet")
+	if(class(esdata)!="ExpressionSet") stop("Object esdata in function run.plgem is not of class ExpressionSet")
+    if(covariateNumb > ncol(pData(esdata))) stop("covariateNumb is greater than the number of covariates in phenodata of esdata")
 	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument signLev in function run.plgem is not of class numeric or integer")
 	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument rank in function run.plgem is not of class numeric or integer")
 	if(class(baselineCondition)!="numeric" && class(baselineCondition)!="integer") stop("Argument baselineCondition in function run.plgem is not of class numeric or integer")
@@ -13,14 +13,15 @@ function(esdata, signLev=0.001, rank=100, baselineCondition=1, Iterations="autom
 	if(class(plotFile)!="logical") stop("Object plotFile in function run.plgem is not of class logical")
 	if(class(Verbose)!="logical") stop("Argument Verbose in function run.plgem is not of class logical")
 
-	condition.name<-unique(as.character(esdata$conditionName))
+	condition.names<-as.character(pData(esdata)[,covariateNumb])
+	condition.name<-unique(condition.names)
 	condition.number<-length(condition.name)
 	if (condition.number < 2) stop("At least 2 conditions are needed in object esdata for function run.plgem")
 	
 	#determining the number of replicates of each condition
 	repl.number<-array(,dim=length(condition.name))
 	for (i in 1:length(condition.name)) {
-	    repl.number[i]<-length(which(esdata$conditionName==condition.name[i]))
+	    repl.number[i]<-length(which(condition.names==condition.name[i]))
 	}
 	if(max(repl.number)==1) stop ("PLGEM can not be fitted without replicates")
 	names(repl.number)<-condition.name
@@ -72,5 +73,8 @@ function(esdata, signLev=0.001, rank=100, baselineCondition=1, Iterations="autom
 		# DEG selection
 		DEG.list<-plgem.deg(obs.stn,res.stn,delta=signLev,verbose=Verbose)
 	}
+
+    if(writeFiles) plgem.write.summary(x = DEG.list, verbose = Verbose) # writing DEG list(s) on the disk
+
 	return(DEG.list)
 }

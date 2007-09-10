@@ -31,6 +31,7 @@ function(observedStn,plgemResampledStn,delta=0.001,verbose=FALSE) {
 	}
 
 	#identification of differentially expressed genes (DEG)
+	geneIDs <- rownames(observedStn)
 	for (i in 1:length(delta)) {
 		if(verbose) cat("Delta = ",delta[i],"\n")
 		DEG.list[[delta.name[i]]]<-list()
@@ -42,7 +43,7 @@ function(observedStn,plgemResampledStn,delta=0.001,verbose=FALSE) {
 			DEG.index<-which(observedStn[,j]>UP | observedStn[,j]<DOWN)
 			DEG.number<-length(DEG.index)
 			DEG.stn<-observedStn[DEG.index,j]
-			names(DEG.stn)<-names(observedStn[DEG.index,j])
+			names(DEG.stn)<-geneIDs[DEG.index]
 			if(DEG.number==0) {
 				DEG.list[[delta.name[i]]][[condition.name[j]]]<-NA
 			}

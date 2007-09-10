@@ -5,23 +5,27 @@
 \description{
 These functions compute the observed and resampled signal to noise ratio (STN) statistic
 using PLGEM fitting parameters (obtained using the function \sQuote{plgem.fit}) to detect differential
-expression in a microarray exprSet \sQuote{data}.
+expression in a microarray ExpressionSet \sQuote{data}.
 }
-\usage{plgem.obsStn(data, plgemFit, baseline.condition = 1, verbose = FALSE)
-plgem.resampledStn(data, plgemFit, baseline.condition = 1,
+\usage{plgem.obsStn(data, plgemFit, covariateNumb = 1, baseline.condition = 1, verbose = FALSE)
+plgem.resampledStn(data, plgemFit,  covariateNumb = 1, baseline.condition = 1,
 iterations = "automatic", verbose=FALSE)
 }
 \arguments{
-  \item{data}{an object of class \sQuote{exprSet} with a \sQuote{conditionName} covariate, see details.}
+  \item{data}{an object of class \sQuote{ExpressionSet}}
   \item{plgemFit}{list; the output of \sQuote{plgem.fit}.}
+  \item{covariateNumb}{number; the covariate used to determine on which samples to fit plgem.}
   \item{baseline.condition}{the condition to be treated as the baseline.}
   \item{verbose}{logical; if TRUE, comments are printed out while running.}
   \item{iterations}{number of iterations for the resampling step; if "automatic" it is automatically determined.}
 }
 \details{
-The exprSet \sQuote{data} must have at least two conditions; by default the first one is considered the baseline.
-\sQuote{data} must have a phenoData slot with a covariate called \sQuote{conditionName}. The values of this covariate
+
+The covariateNumb covariate (the 1st one by default) of the phenoData of the ExpressionSet \sQuote{data} is
+expected to contain the necessary information about te experimental design. The values of this covariate
 must be sample labels, that have to be identical for samples to be treated as replicates.
+In particular, the ExpressionSet \sQuote{data} must have at least two conditions in the \sQuote{covariateNumb} covariate;
+by default the first one is considered the baseline.
 
 PLGEM-STN statistic determines the degree of differential expression between a condition and the baseline:
 
@@ -43,7 +47,7 @@ and the columns represent the different replication schema of the provided compa
   \item{REPL.NUMBER}{the number of replicates found for each experimental condition; see References for details.}
 }
 \references{N. Pavelka et al., BMC Bioinformatics, 2004 Dec 17;5(1):203; \url{http://www.genopolis.it} }
-\author{Mattia Pelizzola \email{mattia.pelizzola@unimib.it} and Norman Pavelka \email{norman.pavelka@unimib.it}}
+\author{Mattia Pelizzola \email{mattia.pelizzola@gmail.com} and Norman Pavelka \email{NXP@stowers-institute.org}}
 \seealso{\code{\link{plgem.fit}},\code{\link{plgem.deg}},\code{\link{run.plgem}} }
 \examples{
 data(LPSeset)

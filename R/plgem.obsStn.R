@@ -1,10 +1,10 @@
 "plgem.obsStn" <-
-function(data,plgemFit,baseline.condition=1,verbose=FALSE) {
+function(data,plgemFit, covariateNumb=1, baseline.condition=1,verbose=FALSE) {
 	library(Biobase)
 
 	#some checks...
-	if(class(data)!="exprSet") stop("Object data in function plgem.obsStn is not of class exprSet")
-	if(!("conditionName" %in% colnames(pData(data)))) stop("the covariate conditionName is not defined in the data exprSet")
+	if(class(data)!="ExpressionSet") stop("Object data in function plgem.obsStn is not of class ExpressionSet")
+     if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.obsStn is not of class list")
 	if(class(baseline.condition)!="numeric" && class(baseline.condition)!="integer") stop("Argument baseline.condition in function plgem.obsStn is not of class numeric or integer")
 	if(class(verbose)!="logical") stop("Argument verbose in function plgem.obsStn is not of class logical")
@@ -21,7 +21,8 @@ function(data,plgemFit,baseline.condition=1,verbose=FALSE) {
 	}
 	
 	#preparing...
-	condition.name<-unique(as.character(data$conditionName))
+	condition.names<-as.character(pData(data)[,covariateNumb])
+	condition.name<-unique(condition.names)
 	condition.number<-length(condition.name)
 	if (condition.number < 2) stop("At least 2 conditions are needed in object data for function plgem.obsStn")
 	if(verbose) cat("found",(condition.number-1),"condition(s) to compare to the baseline.\n")
@@ -29,10 +30,10 @@ function(data,plgemFit,baseline.condition=1,verbose=FALSE) {
 	#replacing zero and negative values with minimum positive value
 	dataMatrix<-replace(dataMatrix,dataMatrix<=0,min(dataMatrix[dataMatrix>0]))
 	if(verbose) cat("working on baseline",condition.name[baseline.condition],"...\n")
-	baseline.col<-which(data$conditionName==condition.name[baseline.condition])
+	baseline.col<-which(condition.names==condition.name[baseline.condition])
 	if (verbose) cat(colnames(dataMatrix)[baseline.col],"\n")
 	obervedStn<-array(,dim=c(nrow(dataMatrix),condition.number-1))
-	rownames(obervedStn)<-geneNames(data)
+	rownames(obervedStn)<-featureNames(data)
 	colnames(obervedStn)<-condition.name[-baseline.condition]
 
 	#calculating mean and modeled spread for the baseline condition
@@ -44,7 +45,7 @@ function(data,plgemFit,baseline.condition=1,verbose=FALSE) {
 	for (i in (1:condition.number)[-baseline.condition]) {
 		col.counter<-col.counter+1
 		if(verbose) cat("working on condition",condition.name[i],"...\n")
-		condition.col<-which(data$conditionName==condition.name[i])
+		condition.col<-which(condition.names==condition.name[i])
 		if(verbose) cat(colnames(dataMatrix)[condition.col],"\n")
 		if(length(condition.col)==1) {mean.right<-dataMatrix[,condition.col]}
 		else {

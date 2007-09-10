@@ -1,12 +1,12 @@
 Package: plgem
 Title: Power Law Global Error Model
-Version: 1.9.0
-Author: Mattia Pelizzola <mattia.pelizzola@unimib.it> and Norman
-        Pavelka <norman.pavelka@unimib.it>
+Version: 1.9.1
+Author: Mattia Pelizzola <mattia.pelizzola@gmail.com> and Norman
+        Pavelka <NXP@stowers-institute.org>
 Description: PLGEM is useful for detecting differential expression in
         microarray datasets.
-Maintainer: Mattia Pelizzola <mattia.pelizzola@unimib.it>
-Depends: R (>= 1.9.0), Biobase, MASS
+Maintainer: Mattia Pelizzola <mattia.pelizzola@gmail.com>
+Depends: R (>= 2.6.0), Biobase, MASS
 License: GPL
 URL: http://www.genopolis.it
 biocViews: Microarray, DifferentialExpression

@@ -20,11 +20,11 @@ is chosen in a microarray with 10000 entries, 10 of the selected DEG are expecte
 \value{
 This function returns a list with a number of items is equal to the number of different significance levels
 (\sQuote{delta}) used as input. Each item is again a list, whose number of items correspond to the number of
-performed comparisons, i.e. the number of conditions in the starting exprSet minus the baseline. In each list-item the values are
+performed comparisons, i.e. the number of conditions in the starting ExpressionSet minus the baseline. In each list-item the values are
 the observed STN and the names are the DEG probeset ids.
 }
 \references{N. Pavelka et al., BMC Bioinformatics, 2004 Dec 17;5(1):203; \url{http://www.genopolis.it} }
-\author{Mattia Pelizzola \email{mattia.pelizzola@unimib.it} and Norman Pavelka \email{norman.pavelka@unimib.it}}
+\author{Mattia Pelizzola \email{mattia.pelizzola@gmail.com} and Norman Pavelka \email{NXP@stowers-institute.org}}
 \seealso{\code{\link{plgem.fit}},\code{\link{plgem.obsStn}},\code{\link{plgem.resampledStn}},\code{\link{run.plgem}} }
 \examples{
 data(LPSeset)

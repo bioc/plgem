@@ -1,10 +1,10 @@
 "plgem.resampledStn" <-
-function(data,plgemFit,baseline.condition=1,iterations="automatic",verbose=FALSE) {
+function(data,plgemFit,covariateNumb=1,baseline.condition=1,iterations="automatic",verbose=FALSE) {
 	library(Biobase)
 
 	#some checks...
-	if(class(data)!="exprSet") stop("Object data in function plgem.resampledStn is not of class exprSet")
-	if(!("conditionName" %in% colnames(pData(data)))) stop("the covariate conditionName is not defined in the data exprSet")
+	if(class(data)!="ExpressionSet") stop("Object data in function plgem.resampledStn is not of class ExpressionSet")
+    if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.resampledStn is not of class list")
 	if(class(baseline.condition)!="numeric" && class(baseline.condition)!="integer") stop("Argument baseline.condition in function plgem.resampledStn is not of class numeric or integer")
 	if(iterations!="automatic" && class(iterations)!="numeric" && class(iterations)!="integer") stop("Argument iterations in function plgem.resampledStn is neither of class numeric (or integer) nor equal to 'automatic'")
@@ -22,7 +22,8 @@ function(data,plgemFit,baseline.condition=1,iterations="automatic",verbose=FALSE
 	}
 
 	#preparing...
-	condition.name<-unique(as.character(data$conditionName))
+	condition.names<-as.character(pData(data)[,covariateNumb])
+	condition.name<-unique(condition.names)
 	condition.number<-length(condition.name)
 	if (condition.number < 2) stop("At least 2 conditions are needed in object data for function plgem.resampledStn")
 	if(verbose) cat("found",(condition.number-1),"condition(s) to compare to the baseline.\n")
@@ -30,10 +31,10 @@ function(data,plgemFit,baseline.condition=1,iterations="automatic",verbose=FALSE
 	#replacing zero and negative values with minimum positive value
 	dataMatrix<-replace(dataMatrix,dataMatrix<=0,min(dataMatrix[dataMatrix>0]))
 	rowNumber<-nrow(dataMatrix)
-	baseline.col<-which(data$conditionName==condition.name[baseline.condition])
+	baseline.col<-which(condition.names==condition.name[baseline.condition])
 	if(verbose) cat("baseline samples:\n")
 	if (verbose) cat(colnames(dataMatrix)[baseline.col],"\n")
-	fit.col<-which(data$conditionName==condition.name[plgemFit$FIT.CONDITION])
+	fit.col<-which(condition.names==condition.name[plgemFit$FIT.CONDITION])
 	if(verbose) cat("resampling on samples:\n")
 	if (verbose) cat(colnames(dataMatrix)[fit.col],"\n")
 
@@ -41,7 +42,7 @@ function(data,plgemFit,baseline.condition=1,iterations="automatic",verbose=FALSE
 	repl.number<-array(,dim=condition.number)
 	names(repl.number)<-condition.name
 	for (i in 1:condition.number)	{
-		repl.number[i]<-length(which(data$conditionName==condition.name[i]))
+		repl.number[i]<-length(which(condition.names==condition.name[i]))
 	}
 	repl.cases<-unique(repl.number[-baseline.condition])
 
