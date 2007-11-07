@@ -37,7 +37,7 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 		max.indexes<-which(repl.number==max(repl.number))
 		adj.r<-array(,dim=length(max.indexes))
 		for(i in 1:length(adj.r)) {
-			adj.r[i]<-as.numeric(plgem.fit(data=esdata,fit.condition=max.indexes[i],p=10,q=0.5,verbose=FALSE)$ADJ.R2.MP)
+			adj.r[i]<-as.numeric(plgem.fit(data=esdata, covariateNumb=covariateNumb, fit.condition=max.indexes[i],p=10,q=0.5,verbose=FALSE)$ADJ.R2.MP)
 		}
 		if(Verbose) cat("adj.r",adj.r,"\n")
 		fit.condition<-max.indexes[which(adj.r==max(adj.r))]
@@ -51,9 +51,9 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 	}
 
 	# fitting and evaluating plgem
-	plgemFit<-plgem.fit(data=esdata,fit.condition,p=10,q=0.5,fittingEval=fitting.eval,plot.file=plotFile,verbose=Verbose)
+	plgemFit<-plgem.fit(data=esdata, covariateNumb=covariateNumb, fit.condition = fit.condition,p=10,q=0.5,fittingEval=fitting.eval,plot.file=plotFile,verbose=Verbose)
 	# computing observed STN statistics
-	obs.stn<-plgem.obsStn(esdata,plgemFit,verbose=Verbose,baseline.condition=baselineCondition)
+	obs.stn<-plgem.obsStn(esdata,plgemFit,verbose=Verbose, covariateNumb=covariateNumb, baseline.condition=baselineCondition)
 
 	if(repl.number[fit.condition]<3) {
 		# since not enough replicates are available for resampling, selection of DEG will be based on ranking
@@ -69,7 +69,7 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 	}
 	else {
 		# computing resampled STN statistics
-		res.stn<-plgem.resampledStn(esdata,plgemFit,iterations=Iterations,baseline.condition=baselineCondition,verbose=Verbose)
+		res.stn<-plgem.resampledStn(esdata,plgemFit,iterations=Iterations,covariateNumb=covariateNumb,baseline.condition=baselineCondition,verbose=Verbose)
 		# DEG selection
 		DEG.list<-plgem.deg(obs.stn,res.stn,delta=signLev,verbose=Verbose)
 	}
