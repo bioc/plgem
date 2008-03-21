@@ -1,0 +1,12 @@
+citEntry(
+  entry="Article",
+  author="Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F, Ricciardi-Castagnoli P",
+  title="A power law global error model for the identification of differentially expressed genes in microarray data",
+  journal="BMC Bioinformatics",
+  volume = "5",
+  year = "2004",
+  pages = "203",
+  doi = "http://dx.doi.org/10.1186/1471-2105-5-203",
+  publisher = "BioMed Central",
+  textVersion = "Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F, Ricciardi-Castagnoli P. A power law global error model for the identification of differentially expressed genes in microarray data. BMC Bioinformatics. 2004 Dec 17;5:203."
+)

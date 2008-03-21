@@ -1,6 +1,5 @@
 "plgem.resampledStn" <-
 function(data,plgemFit,covariateNumb=1,baseline.condition=1,iterations="automatic",verbose=FALSE) {
-	library(Biobase)
 
 	#some checks...
 	if(class(data)!="ExpressionSet") stop("Object data in function plgem.resampledStn is not of class ExpressionSet")
@@ -85,8 +84,7 @@ function(data,plgemFit,covariateNumb=1,baseline.condition=1,iterations="automati
 		}
 		if(verbose) cat("\n")
 	}
-
 	if(verbose) cat("done with calculating resampled PLGEM-STN statistics.\n\n")
 	gc()
-	return(list(RESAMPLED.STN=resampledStn,REPL.NUMBER=repl.number))
+	return(list(RESAMPLED.STN=resampledStn, REPL.NUMBER=repl.number))
 }

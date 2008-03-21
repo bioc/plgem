@@ -12,9 +12,23 @@ This dataset is part of the data used in references.
 }
 \usage{data(LPSeset)}
 \format{An object of class \code{\linkS4class{ExpressionSet}}.}
-\references{N. Pavelka et al., BMC Bioinformatics, 2004 Dec 17;5(1):203; \url{http://www.genopolis.it}}
+\references{
+  Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,
+  Ricciardi-Castagnoli P. A power law global error model for the identification
+  of differentially expressed genes in microarray data. BMC Bioinformatics. 2004
+  Dec 17;5:203.; \url{http://www.biomedcentral.com/1471-2105/5/203}
+
+  Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
+  Florens L, Washburn MP. Statistical similarities between transcriptomics and
+  quantitative shotgun proteomics data. Mol Cell Proteomics. 2007 Nov 19;
+  \url{http://www.mcponline.org/cgi/content/abstract/M700240-MCP200v1}
+}
+\author{
+  Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+  Norman Pavelka \email{nxp@stowers-institute.org}
+}
 \examples{
 data(LPSeset)
 LPSfit<-plgem.fit(data = LPSeset, fittingEval = TRUE)
 }
-\keyword{datasets}
+\keyword{models}

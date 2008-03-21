@@ -12,8 +12,8 @@
 
 \maketitle
 
-In this document a brief tutorial on the \textbf{Power Law Global Error Model} (plgem; N. Pavelka \textit{et. al.},
-BMC Bioinformatics, 2004 Dec 17;5(1):203) is provided.
+In this document a brief tutorial to the \textbf{Power Law Global Error Model}
+analysis method (plgem; N. Pavelka \textit{et. al.}, BMC Bioinformatics, 2004 Dec 17;5(1):203) is provided.
 A \texttt{wrapper} (\textit{run.plgem}) exists that performs all the steps necessary to obtain a list of differentially
 expressed genes (DEG), starting from a dataset of class \textit{ExpressionSet}. It automatically attempts to find the best
 solution at each step, and requires only modest or no input decisions by the user.
@@ -96,12 +96,13 @@ This item is again a list, whose number of items correspond to the number of per
 of conditions in the starting ExpressionSet minus the baseline, in this case again only one. In each list-item the values are the observed STN and the
 names are the DEG probeset ids.
 
-
 <<DEGselection,echo=TRUE>>= 
-LPSdegList<-plgem.deg(observedStn = LPSobsStn, plgemResampledStn = LPSresampledStn, delta = 0.001, verbose = TRUE)
-LPSdegList[["0.001"]][["LPS"]][1:5]
+LPSpValues <- plgem.pValue(observedStn=LPSobsStn, plgemResampledStn=LPSresampledStn, verbose=TRUE)
+LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues, delta=0.001, verbose=TRUE)
+head(LPSdegList[["0.001"]][["LPS"]])
 @
 
-Finally, the obtained list of DEG can be written on the disk using the \textit{plgem.write.summary} function.
+Finally, the obtained list of DEG can be written to the current working
+directory using the \textit{plgem.write.summary} function.
 
 \end{document}

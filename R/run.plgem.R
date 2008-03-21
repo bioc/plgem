@@ -1,29 +1,33 @@
 "run.plgem" <-
 function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, Iterations="automatic", fitting.eval=TRUE, plotFile=FALSE, writeFiles = FALSE, Verbose=FALSE) {
-	library(Biobase)
 
 	#some checks
-	if(class(esdata)!="ExpressionSet") stop("Object esdata in function run.plgem is not of class ExpressionSet")
-    if(covariateNumb > ncol(pData(esdata))) stop("covariateNumb is greater than the number of covariates in phenodata of esdata")
-	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument signLev in function run.plgem is not of class numeric or integer")
-	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument rank in function run.plgem is not of class numeric or integer")
-	if(class(baselineCondition)!="numeric" && class(baselineCondition)!="integer") stop("Argument baselineCondition in function run.plgem is not of class numeric or integer")
-	if(Iterations!="automatic" && class(Iterations)!="numeric" && class(Iterations)!="integer") stop("Argument Iterations in function run.plgem is neither of class numeric (or integer) nor equal to 'automatic'")
-	if(class(fitting.eval)!="logical") stop("Object fitting.eval in function run.plgem is not of class logical")
-	if(class(plotFile)!="logical") stop("Object plotFile in function run.plgem is not of class logical")
-	if(class(Verbose)!="logical") stop("Argument Verbose in function run.plgem is not of class logical")
+	if(class(esdata)!="ExpressionSet") stop("Argument 'esdata' is not of class 'ExpressionSet'.")
+	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument 'signLev' is not of class 'numeric' or 'integer'.")
+	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument 'rank' is not of class 'numeric' or 'integer'.")
+	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'.")
+  if(as.integer(covariateNumb) > ncol(pData(esdata))) stop("Argument 'covariateNumb' is greater than the number of covariates in 'esdata'.")
+	if(class(baselineCondition)!="numeric" && class(baselineCondition)!="integer") stop("Argument 'baselineCondition' is not of class 'numeric' or 'integer'.")
+	if(Iterations!="automatic" && class(Iterations)!="numeric" && class(Iterations)!="integer") stop("Argument 'Iterations' is neither of class 'numeric' (or 'integer') nor equal to 'automatic'.")
+	if(class(fitting.eval)!="logical") stop("Argument 'fitting.eval' is not of class 'logical'.")
+	if(class(plotFile)!="logical") stop("Argument 'plotFile' is not of class 'logical'.")
+	if(class(Verbose)!="logical") stop("Argument 'Verbose' is not of class 'logical'.")
 
-	condition.names<-as.character(pData(esdata)[,covariateNumb])
+  covariateNumb <- as.integer(covariateNumb)
+  condition.names<-as.character(pData(esdata)[,covariateNumb])
 	condition.name<-unique(condition.names)
 	condition.number<-length(condition.name)
-	if (condition.number < 2) stop("At least 2 conditions are needed in object esdata for function run.plgem")
-	
+	if (condition.number < 2) stop("At least 2 conditions are needed in object 'esdata' for function 'run.plgem'.")
+
+  baselineCondition <- as.integer(baselineCondition)
+	if (baselineCondition > condition.number) stop("Argument 'baselineCondition' is greater than the number of conditions in 'esdata'.")
+
 	#determining the number of replicates of each condition
 	repl.number<-array(,dim=length(condition.name))
 	for (i in 1:length(condition.name)) {
 	    repl.number[i]<-length(which(condition.names==condition.name[i]))
 	}
-	if(max(repl.number)==1) stop ("PLGEM can not be fitted without replicates")
+	if(max(repl.number)==1) stop ("PLGEM can not be fitted without replicates.")
 	names(repl.number)<-condition.name
 
 	#determination of the best condition on which to fit the model
@@ -51,9 +55,9 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 	}
 
 	# fitting and evaluating plgem
-	plgemFit<-plgem.fit(data=esdata,fit.condition,p=10,q=0.5,fittingEval=fitting.eval,plot.file=plotFile,verbose=Verbose)
+	plgemFit<-plgem.fit(data=esdata,covariateNumb,fit.condition,p=10,q=0.5,fittingEval=fitting.eval,plot.file=plotFile,verbose=Verbose)
 	# computing observed STN statistics
-	obs.stn<-plgem.obsStn(esdata,plgemFit,verbose=Verbose,baseline.condition=baselineCondition)
+	obs.stn<-plgem.obsStn(esdata,plgemFit,covariateNumb,verbose=Verbose,baseline.condition=baselineCondition)
 
 	if(repl.number[fit.condition]<3) {
 		# since not enough replicates are available for resampling, selection of DEG will be based on ranking
@@ -69,9 +73,11 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 	}
 	else {
 		# computing resampled STN statistics
-		res.stn<-plgem.resampledStn(esdata,plgemFit,iterations=Iterations,baseline.condition=baselineCondition,verbose=Verbose)
+		res.stn<-plgem.resampledStn(esdata,plgemFit,covariateNumb,iterations=Iterations,baseline.condition=baselineCondition,verbose=Verbose)
+    # calculate p-value
+    pValues <- plgem.pValue(obs.stn, res.stn, verbose=Verbose)
 		# DEG selection
-		DEG.list<-plgem.deg(obs.stn,res.stn,delta=signLev,verbose=Verbose)
+		DEG.list<-plgem.deg(obs.stn,pValues,delta=signLev,verbose=Verbose)
 	}
 
     if(writeFiles) plgem.write.summary(x = DEG.list, verbose = Verbose) # writing DEG list(s) on the disk
