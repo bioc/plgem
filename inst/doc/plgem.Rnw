@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{plgem}
-%\VignetteKeywords{Error Model, Microarray}
+%\VignetteKeywords{Error Model, Microarray, Proteomics}
 %\VignetteDepends{plgem}
 %\VignettePackage{plgem}
 
@@ -13,96 +13,169 @@
 \maketitle
 
 In this document a brief tutorial to the \textbf{Power Law Global Error Model}
-analysis method (plgem; N. Pavelka \textit{et. al.}, BMC Bioinformatics, 2004 Dec 17;5(1):203) is provided.
-A \texttt{wrapper} (\textit{run.plgem}) exists that performs all the steps necessary to obtain a list of differentially
-expressed genes (DEG), starting from a dataset of class \textit{ExpressionSet}. It automatically attempts to find the best
-solution at each step, and requires only modest or no input decisions by the user.
-For this purpose we use the microarray dataset used in the paper, where four replicates of LPS stimulated dendritic cells
-(LPS) are compared to sixteen replicates of untreated dendritic cells (C):
+(\textbf{PLGEM}) analysis method is provided \cite{bmc}. A \texttt{wrapper}
+function (called \textit{run.plgem}) is provided in the package, which performs
+all the necessary steps to obtain a list of differentially expressed genes or
+proteins (DEG), starting from a dataset of class \textit{ExpressionSet}.
+This input dataset is expected to contain either normalized gene expression
+values obtained from one-channel microarrays (such as Affymetrix GeneChip
+\cite{bmc}), or normalized spectral counts obtained from mass spectrometry-based
+proteomics methods (such as MudPIT \cite{mcp}).
+The wrapper automatically attempts to find the best solution at each step, and
+requires only modest or no input decisions by the user. For didactic purposes,
+we will use here a subset of the microarray dataset used in the original
+publication about \textbf{PLGEM}, containing two replicates of LPS-stimulated
+dendritic cells ('LPS') and four replicates of untreated dendritic cells ('C'):
 
-<<PLGEMwrapper,echo=TRUE,results=hide>>=
+<<PLGEMwrapper, echo=TRUE, results=hide>>=
 library(plgem)
 data(LPSeset)
-LPSdegList<-run.plgem(esdata = LPSeset)
+set.seed(123)
+LPSdegList <- run.plgem(esdata=LPSeset)
 @
 
-For advanced users, the individual functions are also provided in this tutorial and we will use them now, step by step.
+The above obtained object \textit{LPSdegList} will contain the list of genes or
+proteins, selected as significantly changing between experimental condition
+'LPS' and baseline condition 'C', at the default significance level 0.001.
 
-The first step is the \texttt{fitting of the model} on a microarray dataset. By fitting the model we will obtain
-a mathematical relationship that allows us to determine the expected variability associated to a given expression value.
+To provide advanced users with a higher control on the inner workings of the
+\textbf{PLGEM} pipeline, the individual functions called by \textit{run.plgem}
+are also described in this tutorial. We will use them now, step by step.
 
-PLGEM can only be fitted on a set of replicates of a same experimental condition, therefore we first need to choose
-which condition to use for the fitting step. In our dataset two conditions are provided: C and LPS.
-Usually the most replicated one is chosen, therefore we choose the first condition C, that contains 16 replicates and
-corresponds to a \textit{fit.condition} of 1. Moreover it is necessary to set \textit{p} and \textit{q} parameters.
+The first step is to \texttt{fit the model} to the microarray or proteomics
+dataset. By fitting the model we will obtain a mathematical relationship that
+will allow us to determine the expected standard deviation associated to a given
+average gene expression value or average protein abundance level.
 
-Briefly \textit{p} represents the number of intervals used to partition the expression value range of the dataset; we
-observed that \textit{p} can be modified over a wide range of values, without any major effects on the final results, except
-when it is chosen to close to the total number of genes on the microarray. The default of 10 will be OK for most purposes.
+\textbf{PLGEM} can only be fitted on a set of replicates of a same experimental
+condition, therefore we first need to choose which condition to use for the
+fitting step. In our dataset two conditions are provided: C and LPS.
+Usually the most replicated one is chosen, therefore we choose the first
+condition C (i.e. \textit{fit.condition} 1), because it contains 4 replicates.
 
-\textit{q} is the quantile of the location-dependent spread used to fit the model. The default of \textit{q} is set
-to 0.5, because this represents the median value, which is what you are looking for when modeling the variability.
-We recommend to only modify this parameter for very special purposes, e.g. for the determination of empirical confidence
-intervals of standard deviation.
+Moreover, we can can change the default values of parameters \textit{p} and
+\textit{q}. Briefly, \textit{p} represents the number of intervals (or bins)
+used to partition the expression value range of the dataset. In the original
+publication we observed that \textit{p} can be modified over a wide range of
+values, without any major effects on the final results, except when it was
+chosen to close to the total number of genes or proteins in the dataset
+\cite{bmc}. As a rule of thumb, \textit{p} should be no more than one tenth of
+the number of genes or proteins. The default of 10 should therefore be OK for
+most microarray experiments, but could be set lower for proteomics data where
+less than 100 proteins were identified.
 
-Finally setting \textit{plot.file}=TRUE saves a png image to a file instead of plotting it, therefore we won't change its default.
+\textit{q} is the quantile of the location-dependent spread used to fit the
+model. The default of \textit{q} is set to 0.5, because this represents the
+median value, which is what you are looking for when modeling the variability.
+We recommend to only modify this parameter for very special purposes, e.g. for
+the determination of empirical confidence intervals of standard deviation.
 
-Moreover it is possible to evaluate the fitting of the model setting the option \textit{fittingEval}.
-If this argument is set to TRUE, a multi-panel plot is produced where the residuals of the model are evaluated.
-A good fit is characterized by a near-normal distribution and an horizontal symmetric ranking-plot of the residuals.
+Finally, setting \textit{plot.file}=TRUE saves a png image to a file instead of
+plotting it, therefore we won't change its default.
+
+Moreover it is possible to evaluate the fitting of the model setting the option
+\textit{fittingEval}. If this argument is set to TRUE, a multi-panel plot is
+produced where the residuals of the model are evaluated. A good fit is
+characterized by a near-normal distribution and an horizontal symmetric
+ranking-plot of the residuals.
 
 \begin{center}
 <<modelFitting,fig=TRUE,echo=TRUE>>=
-LPSfit<-plgem.fit(data = LPSeset, covariateNumb = 1, fit.condition = 1, p = 10, q = 0.5, plot.file = FALSE, fittingEval = TRUE, verbose = TRUE)
+LPSfit <- plgem.fit(data=LPSeset, covariateNumb=1, fit.condition=1, p=10, q=0.5,
+  plot.file=FALSE, fittingEval=TRUE, verbose=TRUE)
 @
 \end{center}
 
-The next step is the \texttt{computation of the Signal to Noise ratio} (STN) statistic for the detection
-of differential expression. The STN is determined using the model-derived spread estimates instead of
-the data-derived ones. Therefore it is necessary to give to the \textit{plgem.obsStn} function the model parameters
-\textit{slope} and \textit{intercept} determined during the model fitting that are contained in the value
-returned by \textit{plgem.fit} function.
-By default, all experimental conditions (according to the values of the \textit{covariateNumb} covariate  defined
-in the phenoData slot of the ExpressionSet) are compared to the first condition (baseline). If the condition to be treated
-as the baseline is not the first one, you can change this by modifying the argument \textit{baseline.condition}.
-A matrix of observed STN is determined, where its dimensions are the number of probesets and the
-number of comparisons that can be performed in the dataset. In this case, the dataset contains only one condition to be compared to the 
-baseline, therefore the matrix is reduced to a vector of observed PLGEM-STN.
+The next step is the \texttt{computation of the signal-to-noise ratio} (STN)
+statistic for the detection of differential expression. The STN is determined
+using the model-derived spread estimates instead of the data-derived ones.
+Therefore it is necessary to give to the \textit{plgem.obsStn} function the
+model parameters \textit{slope} and \textit{intercept} determined during the
+model fitting that are contained in the value returned by \textit{plgem.fit}
+function. By default, all experimental conditions (according to the values of
+the \textit{covariateNumb} covariate defined in the phenoData slot of the
+ExpressionSet) are compared to the first condition (baseline). If the condition
+to be treated as the baseline is not the first one, you can change this by
+modifying the argument \textit{baseline.condition}. A matrix of observed STN is
+determined, where the number of rows are the number of genes or proteins in the
+dataset and the number of columns are the number of comparisons that can be
+performed in the dataset (i.e. the total number of experimental conditions minus
+one). In this case, the dataset contains only one condition to be compared to
+the baseline, therefore the matrix will be a one-dimensional array of observed
+PLGEM-STN values.
 
-<<observedSTN,echo=TRUE>>=
-LPSobsStn<-plgem.obsStn(data = LPSeset, covariateNumb = 1, baseline.condition = 1, plgemFit = LPSfit, verbose = TRUE)
+<<observedSTN, echo=TRUE>>=
+LPSobsStn <- plgem.obsStn(data=LPSeset, covariateNumb=1, baseline.condition=1,
+  plgemFit=LPSfit, verbose=TRUE)
 @
 
-In order to get an estimate of the distribution of the test statistic under the null-hypothesis of not differential
-expression, a \texttt{resampled statistic} is determined using the method described in the paper.
-The number of iterations of the resampling step should be correlated with the total number of replicates that
-are present in the data set. If this argument is set to \textit{automatic}, the number of iterations is automatically
-determined based on the total number of possible combinations. In this case, an upper threshold of 500 iterations is set to
-avoid excessive computation time. This should be fine for most purposes.
+In order to get an estimate of the distribution of the test statistic under the
+null-hypothesis of not differential expression, a \texttt{resampled statistic}
+is determined using the method described in the paper \cite{bmc}. The number of
+iterations of the resampling step should be correlated with the total number of
+replicates that are present in the data set. If this argument is set to
+\textit{automatic}, the number of iterations is automatically determined based
+on the total number of possible combinations. In this case, an upper threshold
+of 500 iterations is set to avoid excessive computation time. This should be
+fine for most purposes.
 
-<<resampledSTN,echo=TRUE>>=
-LPSresampledStn<-plgem.resampledStn(data = LPSeset, plgemFit = LPSfit, iterations = "automatic", verbose = TRUE)
+<<resampledSTN, echo=TRUE>>=
+LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit,
+  iterations="automatic", verbose=TRUE)
 @
 
-Finally \texttt{DEG are selected} by comparing the observed statistics to the distribution of resampled STN. For this purpose
-two non-symmetrical thresholds are defined at the given significance level \textit{delta}. \textit{Delta} is roughly an estimate of
-the False Positive Rate (FPR). Therefore if 10000 probesets are evaluated with a \textit{delta} of 0.001, 10 probesets are
-expected to be selected as DEG by chance. Therefore, if 500 DEG are selected, 10 of them are expected to be
-false positives, but obviously it is not possible to know which one they are.
+Next, p-values are calculated for each observed STN value via a call to function
+\textit{plgem.pValue}. Resampled STN values are also required by this function,
+because they will be used to build empirical cumulative distribution functions
+of the STN values that can be observed under the null hypothesis:
 
-This function returns a list with a number of items is equal to the number of different significance levels
-\textit{delta} used as input. In this case the default single value of 0.001 was used, so the list will contain only one item at this level.
-This item is again a list, whose number of items correspond to the number of performed comparisons, i.e. the number
-of conditions in the starting ExpressionSet minus the baseline, in this case again only one. In each list-item the values are the observed STN and the
-names are the DEG probeset ids.
+<<Pvalues, echo=TRUE>>=
+LPSpValues <- plgem.pValue(observedStn=LPSobsStn,
+  plgemResampledStn=LPSresampledStn, verbose=TRUE)
+head(LPSpValues)
+@
 
-<<DEGselection,echo=TRUE>>= 
-LPSpValues <- plgem.pValue(observedStn=LPSobsStn, plgemResampledStn=LPSresampledStn, verbose=TRUE)
-LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues, delta=0.001, verbose=TRUE)
+Finally, \texttt{DEG are selected} at the given significance level
+\textit{delta} via a call to function \textit{plgem.deg}. The chosen value of
+\textit{delta} can be seen as an estimate of the False Positive Rate (FPR).
+Therefore, in case of a microarray dataset with 10000 genes of which not a
+single one is truly differentially expressed, choosing a \textit{delta}
+of 0.001 will select roughly 10 genes by chance:
+
+<<DEGselection,echo=TRUE>>=
+LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues,
+  delta=0.001, verbose=TRUE)
 head(LPSdegList[["0.001"]][["LPS"]])
 @
 
+Above function returns a list with a number of items that is equal to the number
+of different significance levels \textit{delta} used as input. In this case the
+default single value of 0.001 was used, so the list will contain only one item
+at this level. This item is again a list, whose number of items correspond to
+the number of performed comparisons, i.e. the number of conditions in the
+starting ExpressionSet minus the baseline, in this case again only one. In each
+list-item the values are the observed STN and the names are the IDs of the
+significantly changing genes or proteins, as defined in the ExpressionSet.
+
 Finally, the obtained list of DEG can be written to the current working
 directory using the \textit{plgem.write.summary} function.
+
+\begin{thebibliography}{}
+
+\bibitem[1]{bmc}
+Pavelka, N.,~Pelizzola, M.,~Vizzardelli, C.,~Capozzoli, M.,~Splendiani, A.,~
+  Granucci, F. and P. Ricciardi-Castagnoli (2004).
+\newblock A power law global error model for the identification of
+  differentially expressed genes in microarray data.
+\newblock \emph{BMC Bioinformatics}, 5, 203.
+
+\bibitem[2]{mcp}
+Pavelka, N.,~Fournier, M., L.,~Swanson, S., K.,~Pelizzola, M.,~
+  Ricciardi-Castagnoli, P.,~Florens, L. and M. P. Washburn (2007).
+\newblock Statistical similarities between transcriptomics and quantitative
+  shotgun proteomics data.
+\newblock \emph{Molecular and Cellular Proteomics}, 19, in press.
+
+\end{thebibliography}
 
 \end{document}

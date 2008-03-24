@@ -15,17 +15,18 @@
     \code{\link{plgem.obsStn}}.}
   \item{plgemResampledStn}{\code{list}; output of
     \code{\link{plgem.resampledStn}}.}
-  \item{verbose}{\code{logical}; if TRUE, comments are printed out while
+  \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }
 \details{
   The p-value of each given observed STN value is computed based on the quantile
   that the given value occupies in the corresponding distribution of
   resampled PLGEM STN values, based on the following relationship:
-  \center{p-value = min(2*quantile, 2*(1-quantile))}
+  
+  p-value = min(2*quantile, 2*(1-quantile))
 }
 \value{
-  \sQuote{plgem.pValue} returns a matrix with the same \code{\link{dim}}ensions
+  \code{plgem.pValue} returns a matrix with the same \code{\link{dim}}ensions
   and \code{\link{dimnames}} as the input \sQuote{observedStn}, where each entry
   represents the p-value of the corresponding observed PLGEM STN value.
 }
@@ -42,6 +43,7 @@
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+  
   Norman Pavelka \email{nxp@stowers-institute.org}
 }
 \seealso{
@@ -50,7 +52,7 @@
 }
 \examples{
   data(LPSeset)
-  LPSfit <- plgem.fit(data=LPSeset, fittingEval=TRUE)
+  LPSfit <- plgem.fit(data=LPSeset)
   LPSobsStn <- plgem.obsStn(data=LPSeset, plgemFit=LPSfit)
   head(LPSobsStn)
   set.seed(123)

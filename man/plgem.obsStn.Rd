@@ -3,10 +3,11 @@
 \alias{plgem.resampledStn}
 \title{Computation of Observed and Resampled PLGEM-STN statistics}
 \description{
-  These functions compute the observed and resampled signal to noise ratio (STN)
-  statistic using \bold{PLGEM} fitting parameters (obtained via a call to
-  function \sQuote{plgem.fit}) to detect differential expression in an
-  ExpressionSet \sQuote{data}, containing either microarray or proteomics data.
+  These functions compute observed and resampled signal to noise ratio (STN)
+  values using \bold{PLGEM} fitting parameters (obtained via a call to
+  function \code{\link{plgem.fit}}) to detect differential expression in an
+  \code{ExpressionSet} \sQuote{data}, containing either microarray or proteomics
+  data.
 }
 \usage{
   plgem.obsStn(data, plgemFit, covariateNumb=1, baseline.condition=1,
@@ -15,46 +16,49 @@
     iterations="automatic", verbose=FALSE)
 }
 \arguments{
-  \item{data}{an object of class \sQuote{ExpressionSet}}
+  \item{data}{an object of class \code{ExpressionSet}; see Details for important
+    information on how the \code{phenoData} slot of this object will be
+    interpreted by the function.}
   \item{plgemFit}{\code{list}; the output of \sQuote{plgem.fit}.}
-  \item{covariateNumb}{\code{integer} (or coercible to \code{integer}); the
-    covariate used to determine on which samples to fit the \bold{PLGEM}.}
+  \item{covariateNumb}{\code{integer} (or coercible to \code{\link{integer}});
+    the covariate used to determine on which samples to fit the \bold{PLGEM}.}
   \item{baseline.condition}{\code{integer} (or coercible to \code{integer}); the
     condition to be treated as the baseline.}
-  \item{verbose}{\code{logical}; if TRUE, comments are printed out while running.}
+  \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
+    running.}
   \item{iterations}{number of iterations for the resampling step; if
-  "automatic" it is automatically determined.}
+    "automatic" it is automatically determined.}
 }
 \details{
   The \sQuote{covariateNumb} covariate (the 1st one by default) in the
-  \sQuote{pData} of the ExpressionSet \sQuote{data} is expected to contain the
-  necessary information about the experimental design. The values of this
-  covariate must be sample labels, that have to be identical for samples to be
-  treated as replicates. In particular, the ExpressionSet \sQuote{data} must
-  have at least two conditions in the \sQuote{covariateNumb} covariate;
-  by default the first one is considered the baseline.
+  \code{pData} of the \code{ExpressionSet} \sQuote{data} is expected to
+  contain the necessary information about the experimental design. The values of
+  this covariate must be sample labels, that have to be identical for samples to
+  be treated as replicates. In particular, the \code{ExpressionSet}
+  \sQuote{data} must have at least two conditions in the \sQuote{covariateNumb}
+  covariate; by default the first one is considered the baseline.
 
-  PLGEM-STN statistic determines the degree of differential expression between a
-  condition and the baseline:
+  PLGEM-STN values are a measure of the degree of differential expression
+  between a condition and the baseline:
 
   PLGEM-STN = [mean(condition)-mean(baseline)] / [modeledSpread(condition)+modeledSpread(baseline)],
 
   where: ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept
 
-  \sQuote{plgem.obsStn} determines the observed PLGEM-STN values for each gene
-  or protein in \sQuote{data}. \sQuote{plgem.resampledStn} determines the
-  resampled PLGEM-STN values for each gene or protein in \sQuote{data} using
-  a resampling approach; see References for details. The number of iterations
-  should be chosen depending on the number of replicates of the condition used
-  for fitting the model.
+  \code{plgem.obsStn} determines the observed PLGEM-STN values for each gene
+  or protein in \sQuote{data}. \code{plgem.resampledStn} determines the
+  resampled \bold{PLGEM} STN values for each gene or protein in \sQuote{data}
+  using a resampling approach; see References for details. The number of
+  iterations should be chosen depending on the number of replicates of the
+  condition used for fitting the model.
 }
 \value{
-  \sQuote{plgem.obsStn} returns a \code{matrix} of observed PLGEM STN values.
-  The \code{\link{rownames}} of this matrix are identical to the
-  \code{\link{rownames}} of \sQuote{data}. The \code{\link{colnames}} represent
+  \code{plgem.obsStn} returns a \code{matrix} of observed \bold{PLGEM} STN
+  values. The \code{\link{rownames}} of this matrix are identical to the
+  \code{rownames} of \sQuote{data}. The \code{\link{colnames}} represent
   the different experimental conditions that were compared to the baseline.
 
-  \sQuote{plgem.resampledStn} returns a list with two items:
+  \code{plgem.resampledStn} returns a list with two items:
     \item{RESAMPLED.STN}{\code{matrix} of resampled PLGEM STN values, with
     \code{\link{rownames}} identical to those in \sQuote{data}, and
     \code{\link{colnames}} representing the different number of replicates
@@ -75,6 +79,7 @@
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+  
   Norman Pavelka \email{nxp@stowers-institute.org}
 }
 \seealso{
@@ -83,9 +88,15 @@
 }
 \examples{
   data(LPSeset)
-  LPSfit<-plgem.fit(data = LPSeset, fittingEval = TRUE)
-  LPSobsStn<-plgem.obsStn(data = LPSeset, plgemFit = LPSfit)
+  LPSfit <- plgem.fit(data=LPSeset)
+  LPSobsStn <- plgem.obsStn(data=LPSeset, plgemFit=LPSfit)
   set.seed(123)
-  LPSresampledStn<-plgem.resampledStn(data = LPSeset, plgemFit = LPSfit)
+  LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit)
+  plot(density(LPSresampledStn[["RESAMPLED.STN"]], bw=0.01), col="black", lwd=2,
+    xlab="PLGEM STN values",
+    main="Distribution of observed and resampled PLGEM STN values")
+  lines(density(LPSobsStn, bw=0.01), col="red")
+  legend("topright", legend=c("resampled", "observed"), col=c("black", "red"),
+    lwd=2:1)
 }
 \keyword{models}

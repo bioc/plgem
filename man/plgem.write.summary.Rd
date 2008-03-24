@@ -14,7 +14,7 @@
 \arguments{
   \item{x}{\code{list}; the output of either \code{\link{plgem.deg}} or
     \code{\link{run.plgem}}, i.e. a list of list(s) of named vectors.}
-  \item{verbose}{\code{logical}; if TRUE, comments are printed out while
+  \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }
 \details{
@@ -45,5 +45,11 @@
 \seealso{
   \code{\link{plgem.deg}}, \code{\link{run.plgem}}
 }
-\examples{}
+\examples{
+  ## Not run:
+  data(LPSeset)
+  LPSdegList <- run.plgem(LPSeset)
+  plgem.write.summary(LPSdegList, verbose=TRUE)
+  ## End(Not run)
+}
 \keyword{models}

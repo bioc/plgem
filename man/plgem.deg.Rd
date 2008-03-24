@@ -20,7 +20,8 @@
     \code{\link{plgem.pValue}}.}
   \item{delta}{numeric vector; the significance level(s) to be used for the
     selection of DEG; value(s) must be between 0 and 1 (excluded).}
-  \item{verbose}{\code{logical}; if TRUE, comments are printed out while running.}
+  \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
+    running.}
 }
 \details{
   This function allows for the selection of DEG by setting a significance
@@ -34,9 +35,10 @@
   different significance levels (\sQuote{delta}) used as input. Each item of
   this list is again a list, whose number of items correspond to the number of
   performed comparisons (i.e. the number of conditions in the starting
-  ExpressionSet minus the baseline). Each of these second level list-items is a
-  vector of observed STN values of the genes or proteins that passed the
-  corresponding significance threshold in the corresponding comparison.
+  \code{ExpressionSet} minus the baseline). Each of these second level
+  list-items is a vector of observed STN values of the genes or proteins that
+  passed the corresponding significance threshold in the corresponding
+  comparison.
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,
@@ -51,6 +53,7 @@
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+  
   Norman Pavelka \email{nxp@stowers-institute.org}
 }
 \seealso{
