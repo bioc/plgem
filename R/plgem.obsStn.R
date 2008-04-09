@@ -4,7 +4,8 @@ function(data,plgemFit, covariateNumb=1, baseline.condition=1,verbose=FALSE) {
 
 	#some checks...
 	if(class(data)!="ExpressionSet") stop("Object data in function plgem.obsStn is not of class ExpressionSet")
-     if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
+	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'.")
+  if(as.integer(covariateNumb) > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.obsStn is not of class list")
 	if(class(baseline.condition)!="numeric" && class(baseline.condition)!="integer") stop("Argument baseline.condition in function plgem.obsStn is not of class numeric or integer")
 	if(class(verbose)!="logical") stop("Argument verbose in function plgem.obsStn is not of class logical")

@@ -1,27 +1,29 @@
 "plgem.fit" <-
-function(data, covariateNumb=1, fit.condition=1,p=10,q=0.5,fittingEval=FALSE,plot.file=FALSE,verbose=FALSE) {
+function(data, covariateNumb=1, fit.condition=1, p=10, q=0.5, fittingEval=FALSE, plot.file=FALSE, verbose=FALSE) {
 	library(Biobase)
 	library(MASS)
 
 	# some checks..
-	if(class(data)!="ExpressionSet") stop("Object data in function plgem.fit is not of class ExpressionSet")
-	if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
-	if(class(fit.condition)!="numeric" && class(fit.condition)!="integer") stop("Argument fit.condition in function plgem.fit is not of class numeric or integer")
-	if(class(p)!="numeric" && class(p)!="integer") stop("Argument p in function plgem.fit is not of class numeric or integer")
-	if(class(q)!="numeric" && class(q)!="integer") stop("Argument q in function plgem.fit is not of class numeric or integer")
-	if(class(fittingEval)!="logical") stop("Argument fittingEval in function plgem.fit is not of class logical")
-	if(class(plot.file)!="logical") stop("Argument plot.file in function plgem.fit is not of class logical")
-	if(class(verbose)!="logical") stop("Argument verbose in function plgem.fit is not of class logical")
+	if(class(data)!="ExpressionSet") stop("Object 'data' in function plgem.fit is not of class 'ExpressionSet'")
+	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'")
+	if(as.integer(covariateNumb) > ncol(pData(data))) stop("Argument 'covariateNumb' is greater than the number of covariates in 'data'")
+	if(class(fit.condition)!="numeric" && class(fit.condition)!="integer") stop("Argument 'fit.condition' is not of class 'numeric' or 'integer'")
+	if(class(p)!="numeric" && class(p)!="integer") stop("Argument 'p' is not of class 'numeric' or 'integer'")
+	if(class(q)!="numeric" && class(q)!="integer") stop("Argument 'q' is not of class 'numeric' or 'integer'")
+	if(!(q >= 0 && q <= 1)) stop("Argument 'q' is not in the range [0,1]")
+	if(class(fittingEval)!="logical") stop("Argument 'fittingEval' is not of class 'logical'")
+	if(class(plot.file)!="logical") stop("Argument 'plot.file' is not of class 'logical'")
+	if(class(verbose)!="logical") stop("Argument 'verbose' is not of class 'logical'")
 
 	if(verbose) cat("fitting PLGEM..","\n")
 
 	if(verbose) cat("samples extracted for fitting:","\n")
-	condition.names<-as.character(pData(data)[,covariateNumb])
-	condition.name<-unique(condition.names)
-	data<-data[,which(condition.names==condition.name[fit.condition])]
+	condition.names <- as.character(pData(data)[,covariateNumb])
+	condition.name <- unique(condition.names)
+	data <- data[, which(condition.names==condition.name[fit.condition])]
 	if(verbose) print(pData(data))
-	row<-length(featureNames(data))
-	if(length(sampleNames(data))<2) stop("At least 2 replicates needed to fit PLGEM")
+	row <- length(featureNames(data))
+	if(length(sampleNames(data)) < 2) stop("At least 2 replicates needed to fit PLGEM")
 
 	# 'data' mean and standard deviation
 	dataMatrix<-exprs(data)

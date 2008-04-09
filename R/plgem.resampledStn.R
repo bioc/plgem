@@ -3,7 +3,8 @@ function(data,plgemFit,covariateNumb=1,baseline.condition=1,iterations="automati
 
 	#some checks...
 	if(class(data)!="ExpressionSet") stop("Object data in function plgem.resampledStn is not of class ExpressionSet")
-    if(covariateNumb > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
+	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'.")
+  if(as.integer(covariateNumb) > ncol(pData(data))) stop("covariateNumb is greater than the number of covariates in phenodata of data")
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.resampledStn is not of class list")
 	if(class(baseline.condition)!="numeric" && class(baseline.condition)!="integer") stop("Argument baseline.condition in function plgem.resampledStn is not of class numeric or integer")
 	if(iterations!="automatic" && class(iterations)!="numeric" && class(iterations)!="integer") stop("Argument iterations in function plgem.resampledStn is neither of class numeric (or integer) nor equal to 'automatic'")

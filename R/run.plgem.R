@@ -3,7 +3,8 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 
 	#some checks
 	if(class(esdata)!="ExpressionSet") stop("Argument 'esdata' is not of class 'ExpressionSet'.")
-	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument 'signLev' is not of class 'numeric' or 'integer'.")
+	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument 'signLev' is not of class 'numeric' or 'integer'")
+	if(!(signLev >= 0 && signLev <= 1)) stop("Argument 'signLev' is not in the range [0,1]")
 	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument 'rank' is not of class 'numeric' or 'integer'.")
 	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'.")
   if(as.integer(covariateNumb) > ncol(pData(esdata))) stop("Argument 'covariateNumb' is greater than the number of covariates in 'esdata'.")
@@ -14,9 +15,9 @@ function(esdata, signLev=0.001, rank=100, covariateNumb=1, baselineCondition=1, 
 	if(class(Verbose)!="logical") stop("Argument 'Verbose' is not of class 'logical'.")
 
   covariateNumb <- as.integer(covariateNumb)
-  condition.names<-as.character(pData(esdata)[,covariateNumb])
-	condition.name<-unique(condition.names)
-	condition.number<-length(condition.name)
+  condition.names <- as.character(pData(esdata)[,covariateNumb])
+	condition.name <- unique(condition.names)
+	condition.number <- length(condition.name)
 	if (condition.number < 2) stop("At least 2 conditions are needed in object 'esdata' for function 'run.plgem'.")
 
   baselineCondition <- as.integer(baselineCondition)
