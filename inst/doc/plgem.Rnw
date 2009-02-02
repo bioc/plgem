@@ -5,7 +5,7 @@
 
 \documentclass[a4paper]{article}
 
-\title{PLGEM overview}
+\title{Introduction to PLGEM}
 \author{Mattia Pelizzola and Norman Pavelka}
 
 \begin{document}
@@ -167,14 +167,14 @@ Pavelka, N.,~Pelizzola, M.,~Vizzardelli, C.,~Capozzoli, M.,~Splendiani, A.,~
   Granucci, F. and P. Ricciardi-Castagnoli (2004).
 \newblock A power law global error model for the identification of
   differentially expressed genes in microarray data.
-\newblock \emph{BMC Bioinformatics}, 5, 203.
+\newblock \emph{BMC Bioinformatics}, 5:203.
 
 \bibitem[2]{mcp}
 Pavelka, N.,~Fournier, M., L.,~Swanson, S., K.,~Pelizzola, M.,~
-  Ricciardi-Castagnoli, P.,~Florens, L. and M. P. Washburn (2007).
+  Ricciardi-Castagnoli, P.,~Florens, L. and M. P. Washburn (2008).
 \newblock Statistical similarities between transcriptomics and quantitative
   shotgun proteomics data.
-\newblock \emph{Molecular and Cellular Proteomics}, 19, in press.
+\newblock \emph{Molecular and Cellular Proteomics}, 7(4):631-44.
 
 \end{thebibliography}
 

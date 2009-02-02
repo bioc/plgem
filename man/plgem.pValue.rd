@@ -34,12 +34,12 @@
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,
   Ricciardi-Castagnoli P. A power law global error model for the identification
   of differentially expressed genes in microarray data. BMC Bioinformatics. 2004
-  Dec 17;5:203; \url{http://www.biomedcentral.com/1471-2105/5/203}
+  Dec 17; 5:203; \url{http://www.biomedcentral.com/1471-2105/5/203}.
 
   Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
   Florens L, Washburn MP. Statistical similarities between transcriptomics and
-  quantitative shotgun proteomics data. Mol Cell Proteomics. 2007 Nov 19;
-  \url{http://www.mcponline.org/cgi/content/abstract/M700240-MCP200v1}
+  quantitative shotgun proteomics data. Mol Cell Proteomics. 2008 Apr;
+  7(4):631-44; \url{http://www.mcponline.org/cgi/content/full/7/4/631}.
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
