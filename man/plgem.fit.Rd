@@ -93,8 +93,7 @@
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
-  
-  Norman Pavelka \email{nxp@stowers-institute.org}
+  Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{
   \code{\link{plgem.obsStn}}, \code{\link{plgem.resampledStn}},
