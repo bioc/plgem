@@ -3,7 +3,8 @@
 # ==========================================================================
 
 .onLoad <- function(lib, pkg) {
-  message(paste("\nWelcome to", pkg, "version", packageDescription(pkg)$Version,
-    "\n"))
-  addVigs2WinMenu(pkg)
+  pkgVersion <- packageDescription(pkg)$Version
+  msg <- paste("\nWelcome to", pkg, "version", pkgVersion, "\n")
+  message(msg)
+  Biobase::addVigs2WinMenu(pkg)
 }
