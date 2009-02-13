@@ -31,10 +31,10 @@ these datasets \cite{bmc, mcp}.
 
 \section{Running \textbf{PLGEM} in \emph{wrapper} mode}
 
-A \emph{wrapper} function (called \Rfunction{run.plgem}) is provided in the
-package, which performs all the necessary steps to obtain a list of
-differentially expressed genes or proteins (DEG), starting from a dataset of
-class \Rclass{ExpressionSet}.
+A wrapper function (called \Rfunction{run.plgem}) is provided in the package,
+which performs all the necessary steps to obtain a list of differentially
+expressed genes or proteins (DEG), starting from a dataset of class
+\Rclass{ExpressionSet}.
 
 This input dataset is expected to contain either normalized gene expression
 values obtained from one-channel microarrays (such as Affymetrix GeneChip
@@ -61,21 +61,23 @@ proteins, selected as significantly changing between experimental condition
 \section{Running \textbf{PLGEM} in \emph{step-by-step} mode}
 
 To provide advanced users with a higher control on the inner workings of the
-\textbf{PLGEM} pipeline, the individual functions called by \textit{run.plgem}
-are also described in this tutorial. We will use them now, step by step.
+\textbf{PLGEM} pipeline, the individual functions called by
+\Rfunction{run.plgem} are also described in this tutorial. We will use them now,
+step by step.
 
 \subsection{Fitting of the model to a data set}
 
-The first step is to \emph{fit the model} to the microarray or proteomics
-dataset. By fitting the model we will obtain a mathematical relationship that
-will allow us to determine the expected standard deviation associated to a given
-average gene expression value or average protein abundance level.
+The first step is to fit the model to the microarray or proteomics dataset. By
+fitting the model we will obtain a mathematical relationship that will allow us
+to determine the expected standard deviation associated to a given average gene
+expression value or average protein abundance level.
 
 \textbf{PLGEM} can only be fitted on a set of replicates of a same experimental
 condition, therefore we first need to choose which condition to use for the
-fitting step. In our dataset two conditions are provided: C and LPS.
+fitting step. In our dataset two conditions are provided: 'C' and 'LPS'.
 Usually the most replicated one is chosen, therefore we choose the first
-condition C (i.e. \Rfunarg{fit.condition = 1}), because it contains 4 replicates.
+condition 'C' (i.e. \Rfunarg{fit.condition=1}), because it contains four
+replicates.
 
 Moreover, we can can change the default values of parameters \Rfunarg{p} and
 \Rfunarg{q}. Briefly, \Rfunarg{p} represents the number of intervals (or bins)
@@ -94,14 +96,14 @@ median value, which is what you are looking for when modeling the variability.
 We recommend to only modify this parameter for very special purposes, e.g. for
 the determination of empirical confidence intervals of standard deviation.
 
-Finally, setting \Rfunarg{plot.file = TRUE} saves a png image to a file instead of
-plotting it, therefore we won't change its default.
-
 Moreover it is possible to evaluate the fitting of the model setting the option
 \Rfunarg{fittingEval}. If this argument is set to \Rfunarg{TRUE}, a multi-panel
 plot is produced where the residuals of the model are evaluated. A good fit is
-characterized by a near-normal distribution and an horizontal symmetric
-ranking-plot of the residuals.
+characterized by a near-normal distribution and an horizontal symmetric plot of
+the ranked residuals.
+
+Finally, setting \Rfunarg{plot.file=TRUE} saves above diagnostic plot to a png
+file instead of the default device, therefore we won't change its default.
 
 \begin{center}
 <<modelFitting,fig=TRUE,echo=TRUE>>=
@@ -112,15 +114,15 @@ LPSfit <- plgem.fit(data=LPSeset, covariateNumb=1, fit.condition=1, p=10, q=0.5,
 
 \subsection{Computation of observed signal-to-noise ratios}
 
-The next step is the \emph{computation of the signal-to-noise ratio} (STN)
-statistics for the detection of differential expression. The STN is determined
-using the model-derived spread estimates instead of the data-derived ones.
+The next step is the computation of the signal-to-noise ratio (STN) statistics
+for the detection of differential expression. The STN is determined using the
+model-derived spread estimates instead of the data-derived ones.
 Therefore it is necessary to give to the \Rfunction{plgem.obsStn} function the
 model parameters \Rfunarg{slope} and \Rfunarg{intercept} determined during the
 model fitting that are contained in the value returned by \Rfunction{plgem.fit}
 function. By default, all experimental conditions (according to the values of
-the \Rfunarg{covariateNumb} covariate defined in the \Robject{phenoData} slot of
-the \Robject{ExpressionSet}) are compared to the first condition (baseline). If
+the \Rfunarg{covariateNumb} covariate defined in the \Rclass{phenoData} slot of
+the \Rclass{ExpressionSet}) are compared to the first condition (baseline). If
 the condition to be treated as the baseline is not the first one, you can change
 this by modifying the argument \Rfunarg{baseline.condition}. A matrix of
 observed STN is determined, where the number of rows are the number of genes or
@@ -138,14 +140,14 @@ LPSobsStn <- plgem.obsStn(data=LPSeset, covariateNumb=1, baseline.condition=1,
 \subsection{Computation of resampled signal-to-noise ratios}
 
 In order to get an estimate of the distribution of the test statistic under the
-null-hypothesis of not differential expression, a \emph{resampled statistic}
-is determined using the method described in the paper \cite{bmc}. The number of
+null-hypothesis of not differential expression, a resampled statistic is
+determined using the method described in the paper \cite{bmc}. The number of
 iterations of the resampling step should be correlated with the total number of
 replicates that are present in the data set. If this argument is set to
-\Rfunarg{automatic}, the number of iterations is automatically determined based
-on the total number of possible combinations. In this case, an upper threshold
-of 500 iterations is set to avoid excessive computation time. This should be
-fine for most purposes.
+\Rfunarg{"automatic"}, the number of iterations is automatically determined
+based on the total number of possible combinations. In this case, an upper
+threshold of 500 iterations is set to avoid excessive computation time. This
+should be fine for most purposes.
 
 <<resampledSTN, echo=TRUE>>=
 LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit,
@@ -154,8 +156,8 @@ LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit,
 
 \subsection{Computation of p-values}
 
-Next, \emph{p-values are calculated} for each observed STN value via a call to
-function \Rfunction{plgem.pValue}. Resampled STN values are also required by this
+Next, p-values are calculated for each observed STN value via a call to function
+\Rfunction{plgem.pValue}. Resampled STN values are also required by this
 function, because they will be used to build empirical cumulative distribution
 functions of the STN values that can be observed under the null hypothesis:
 
@@ -165,14 +167,14 @@ LPSpValues <- plgem.pValue(observedStn=LPSobsStn,
 head(LPSpValues)
 @
 
-\subsection{Detection of differentially expressed genes or proteins}
+\subsection{Detection of differentially expressed genes or proteins (DEG)}
 
-Finally, \emph{DEG are selected} at the given significance level
-\Rfunarg{delta} via a call to function \Rfunction{plgem.deg}. The chosen value of
-\Rfunarg{delta} can be seen as an estimate of the False Positive Rate (FPR).
-Therefore, in case of a microarray dataset with 10000 genes of which not a
-single one is truly differentially expressed, choosing a \Rfunction{delta}
-of 0.001 will select roughly 10 genes by chance:
+Finally, DEG are selected at the given significance level \Rfunarg{delta} via a
+call to function \Rfunction{plgem.deg}. The chosen value of \Rfunarg{delta} can
+be seen as an estimate of the False Positive Rate (FPR). Therefore, in case of a
+microarray dataset with 10,000 genes of which not a single one is truly
+differentially expressed, choosing \Rfunarg{delta=0.001} will select
+roughly 10 genes by chance:
 
 <<DEGselection,echo=TRUE>>=
 LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues,
@@ -181,13 +183,14 @@ head(LPSdegList[["0.001"]][["LPS"]])
 @
 
 Above function returns a list with a number of items that is equal to the number
-of different significance levels \Rfunction{delta} used as input. In this case the
-default single value of 0.001 was used, so the list will contain only one item
-at this level. This item is again a list, whose number of items correspond to
-the number of performed comparisons, i.e. the number of conditions in the
+of different significance levels \Rfunarg{delta} used as input. In this case
+the default single value of 0.001 was used, so the list will contain only one
+item at this level. This item is again a list, whose number of items correspond
+to the number of performed comparisons, i.e. the number of conditions in the
 starting \Rclass{ExpressionSet} minus the baseline, in this case again only one.
-In each list-item the values are the observed STN and the names are the IDs of the
-significantly changing genes or proteins, as defined in the ExpressionSet.
+In each list-item the values are the observed STN and the names are the IDs of
+the significantly changing genes or proteins, as defined in the
+\Rclass{ExpressionSet}.
 
 Finally, the obtained list of DEG can be written to the current working
 directory using the \Rfunction{plgem.write.summary} function.

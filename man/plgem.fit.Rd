@@ -2,17 +2,13 @@
 \alias{plgem.fit}
 \title{PLGEM Fitting and Evaluation}
 \description{
-  Function for fitting and evaluating goodness of fit of \bold{PLGEM} on a
-  \sQuote{data} \code{ExpressionSet}, using the set of replicated samples
-  identified by the \sQuote{fit.condition} condition of the
-  \sQuote{covariateNumb} covariate. The range of gene expression values (or
-  protein abundance levels) will be partitioned in \sQuote{p} intervals, and the
-  model will be fit at the \sQuote{q}-th quantile of standard deviations in each
-  partition.
+  Function for fitting and evaluating goodness of fit of a \bold{PLGEM} on a set
+  of replicated samples defined in an \code{ExpressionSet}.
 }
 \usage{
   plgem.fit(data, covariateNumb=1, fit.condition=1, p=10, q=0.5,
-    fittingEval=FALSE, plot.file=FALSE, verbose=FALSE)
+    trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE, 
+    plot.file=FALSE, verbose=FALSE)
 }
 \arguments{
   \item{data}{an object of class \code{ExpressionSet}; see Details for important
@@ -27,6 +23,14 @@
     used to partition the expression value range.}
   \item{q}{\code{numeric} in [0,1]; the quantile of standard deviation used for
   \bold{PLGEM} fitting.}
+  \item{trimAllZeroRows}{\code{logical}; if \code{TRUE}, rows in the data set
+    containing only zero values are trimmed before fitting \bold{PLGEM}.}
+  \item{zeroMeanOrSD}{either \code{NULL} or \code{character}; what should be
+    done if a row with non-positive mean or zero standard deviation is
+    encountered before fitting \bold{PLGEM}? Current options are one of
+    \code{"replace"} or \code{"trim"}. Partial matching is used to switch
+    between the options and setting the value to \code{NULL} will cause the
+    default behaviour to be enforced, i.e. to \code{"replace"} (see Details).}
   \item{fittingEval}{\code{logical}; if \code{TRUE}, the fitting is evaluated
     generating a diagnostic plot.}
   \item{plot.file}{\code{logical}; if \code{TRUE}, a png file is written on the
@@ -48,17 +52,32 @@
   as well as to datasets of normalized spectral counts obtained by mass
   spectrometry-based proteomics (see References for details).
   
-  The \sQuote{covariateNumb} covariate (the first one by default) of the
-  \code{phenoData} of the \code{ExpressionSet} \sQuote{data} is expected to
-  contain the necessary information about the experimental design. The values of
-  this covariate must be sample labels, that have to be identical for samples to
-  be treated as replicates.
+  The \code{covariateNumb} covariate (the first one by default) defined in the
+  input \code{ExpressionSet} is expected to contain the necessary information
+  to distinguish the various experimental conditions from one another. The
+  values of this covariate must be condition names, which have to be identical
+  for samples that are to be treated as replicates.
+  
+  Setting \code{trimAllZeroRows = TRUE} is especially useful in proteomics data
+  sets, where there is no guarantee of identifying a protein across all
+  experimental conditions. Since \bold{PLGEM} is fitted only to the data
+  corresponding to a single experimental condition (as defined by
+  \code{fit.condition}), it is possible to generate a non-negligible number of
+  rows containing only zero values, even if there were no such rows in the
+  original (complete) data set containing all experimental conditions.
 
-  \code{plgem.fit} returns \sQuote{SLOPE} and \sQuote{INTERCEPT} of the above
-  described power law; moreover it returns the Pearson's correlation coefficient
-  (\sQuote{DATA.PEARSON}) of ln(mean) vs. ln(sd) in the original data, as well
-  as the adjusted R squared (\sQuote{ADJ.R2.MP}) of the \bold{PLGEM} fitted to
-  the modelling points.
+  Setting \code{zeroMeanOrSD = "replace"} (the current default, for backward
+  compatibility) will cause the function to replace zero or negative means with
+  the smallest positive mean found in the data set and to replace zero standard
+  deviations with the smallest non-zero standard deviation found in the data
+  set. Setting \code{zeroMeanOrSD = "trim"} is the current recommended option,
+  especially for spectral counting proteomics data sets that are typically
+  characterized by a high data granularity or for microarray data sets with a
+  small number of replicates. In both cases, there are chances for data values
+  for a same gene or protein to be identical across replicates (and therefore
+  with zero standard deviation) by chance alone. Note that setting
+  \code{trimAllZeroRows = TRUE} does not guarantee that there will be no rows
+  with zero mean or zero standard deviation.
 
   If argument \sQuote{fittingEval} is \code{TRUE}, a graphical control of the
   goodness of the \bold{PLGEM} fitting is produced and a plot containing four
