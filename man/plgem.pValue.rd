@@ -12,8 +12,8 @@
 }
 \arguments{
   \item{observedStn}{\code{matrix} of observed PLGEM STN values; output of
-    \code{\link{plgem.obsStn}}.}
-  \item{plgemResampledStn}{\code{list}; output of
+    function \code{\link{plgem.obsStn}}.}
+  \item{plgemResampledStn}{\code{list}; output of function
     \code{\link{plgem.resampledStn}}.}
   \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
@@ -27,7 +27,7 @@
 }
 \value{
   \code{plgem.pValue} returns a matrix with the same \code{\link{dim}}ensions
-  and \code{\link{dimnames}} as the input \sQuote{observedStn}, where each entry
+  and \code{\link{dimnames}} as the input \code{observedStn}, where each entry
   represents the p-value of the corresponding observed PLGEM STN value.
 }
 \references{

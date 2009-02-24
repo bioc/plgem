@@ -6,7 +6,7 @@
   of replicated samples defined in an \code{ExpressionSet}.
 }
 \usage{
-  plgem.fit(data, covariateNumb=1, fit.condition=1, p=10, q=0.5,
+  plgem.fit(data, covariate=1, fitCondition=1, p=10, q=0.5,
     trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE, 
     plot.file=FALSE, verbose=FALSE)
 }
@@ -14,11 +14,12 @@
   \item{data}{an object of class \code{ExpressionSet}; see Details for important
     information on how the \code{phenoData} slot of this object will be
     interpreted by the function.}
-  \item{covariateNumb}{\code{integer} (or coercible to \code{integer}); the
-    covariate used to determine on which samples to fit the \bold{PLGEM}.}
-  \item{fit.condition}{\code{integer} (or coercible to \code{integer}); the
-    condition used for \bold{PLGEM} fitting, according to the order of unique
-    values of the \sQuote{covariateNumb} covariate.}
+  \item{covariate}{\code{integer}, \code{numeric} or \code{character}; specifies
+    the covariate to be used to fit the \bold{PLGEM}. See Details for how to
+    specify the \code{covariate}.}
+  \item{fitCondition}{\code{integer}, \code{numeric} or \code{character};
+    specifies the condition to be used to fit the \bold{PLGEM}. See Details for
+    how to specify the \code{fitCondition}.}
   \item{p}{\code{integer} (or coercible to \code{integer}); number of intervals
     used to partition the expression value range.}
   \item{q}{\code{numeric} in [0,1]; the quantile of standard deviation used for
@@ -52,17 +53,37 @@
   as well as to datasets of normalized spectral counts obtained by mass
   spectrometry-based proteomics (see References for details).
   
-  The \code{covariateNumb} covariate (the first one by default) defined in the
-  input \code{ExpressionSet} is expected to contain the necessary information
-  to distinguish the various experimental conditions from one another. The
-  values of this covariate must be condition names, which have to be identical
-  for samples that are to be treated as replicates.
+  The \code{phenoData} slot of the \code{ExpressionSet} given as input is
+  expected to contain the necessary information to distinguish the various
+  experimental conditions from one another. The columns of the \code{pData} are
+  referred to as \sQuote{covariates}. There has to be at least one covariate
+  defined in the input \code{ExpressionSet}. The sample attributes according to
+  this covariate must be distinct for samples that are to be treated as distinct
+  experimental conditions and identical for samples that are to be treated as
+  replicates.
+  
+  There is a couple different ways to specify the \code{covariate}: If an
+  \code{integer} or a \code{numeric} is given, it will be taken as the covariate
+  number (in the same order in which the covariates appear in the
+  \code{colnames} of the \code{pData}). If a \code{character} is given, it will
+  be taken as the covariate name (in the same way the covariates are specified
+  in the \code{colnames} of the \code{pData}). By default, the first covariate
+  appearing in the \code{colnames} of the \code{pData} is used.
+  
+  Similarly, there is a couple different ways to specify on which experimental
+  condition to fit the model. The available \sQuote{condition names} are taken
+  from \code{unique(as.character(pData(data)[, covariate]))}. If
+  \code{fitCondition} is given as a \code{character}, it will be taken as the
+  condition name itself. If \code{fitCondition} is given as an \code{integer}
+  or a \code{numeric} value, it will be taken as the condition number (in the
+  same order of appearance in the \sQuote{condition names}). By default, the
+  first appearing condition name is used.
   
   Setting \code{trimAllZeroRows = TRUE} is especially useful in proteomics data
   sets, where there is no guarantee of identifying a protein across all
   experimental conditions. Since \bold{PLGEM} is fitted only to the data
   corresponding to a single experimental condition (as defined by
-  \code{fit.condition}), it is possible to generate a non-negligible number of
+  \code{fitCondition}), it is possible to generate a non-negligible number of
   rows containing only zero values, even if there were no such rows in the
   original (complete) data set containing all experimental conditions.
 
@@ -79,25 +100,26 @@
   \code{trimAllZeroRows = TRUE} does not guarantee that there will be no rows
   with zero mean or zero standard deviation.
 
-  If argument \sQuote{fittingEval} is \code{TRUE}, a graphical control of the
-  goodness of the \bold{PLGEM} fitting is produced and a plot containing four
-  panels is generated. The top-left panel shows the power law, characterized by
-  \sQuote{SLOPE} and \sQuote{INTERCEPT}. The top-right panel represents the
-  distribution of model residuals. The bottom-left reports the contour plot of
-  ranked residuals. The bottom-right panel finally shows the relationship
-  between the distribution of observed residuals and the normal distribution.
-  A good fit normally gives a horizontal symmetric rank-plot and a near normal
-  distribution of residuals.
+  If argument \code{fittingEval} is set to \code{TRUE}, a graphical control of
+  the goodness of the \bold{PLGEM} fitting is produced and a plot containing
+  four panels is generated. The top-left panel shows the power law,
+  characterized by a \sQuote{SLOPE} and an \sQuote{INTERCEPT}. The top-right
+  panel represents the distribution of model residuals. The bottom-left reports
+  the contour plot of ranked residuals. The bottom-right panel finally shows the
+  relationship between the distribution of observed residuals and the normal
+  distribution. A good fit normally gives a horizontal symmetric rank-plot and a
+  near normal distribution of residuals.
 }
 \value{
-\code{plgem.fit} returns a list of five numbers (see Details):
+\code{plgem.fit} returns a list of six numbers (see Details):
   \item{SLOPE}{the slope of the fitted PLGEM.}
   \item{INTERCEPT}{the intercept of the fitted PLGEM.}
   \item{DATA.PEARSON}{the Pearson correlation coefficient of the linear model
   fitted on the original data.}
   \item{ADJ.R2.MP}{the adjusted R squared of PLGEM fitted on the modelling
   points.}
-  \item{FIT.CONDITION}{the condition used for fitting PLGEM.}
+  \item{COVARIATE}{the covariate used for fitting the PLGEM.}
+  \item{FIT.CONDITION}{the condition used for fitting the PLGEM.}
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,

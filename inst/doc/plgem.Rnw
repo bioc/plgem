@@ -76,7 +76,7 @@ expression value or average protein abundance level.
 condition, therefore we first need to choose which condition to use for the
 fitting step. In our dataset two conditions are provided: 'C' and 'LPS'.
 Usually the most replicated one is chosen, therefore we choose the first
-condition 'C' (i.e. \Rfunarg{fit.condition=1}), because it contains four
+condition 'C' (i.e. \Rfunarg{fitCondition='C'}), because it contains four
 replicates.
 
 Moreover, we can can change the default values of parameters \Rfunarg{p} and
@@ -107,7 +107,7 @@ file instead of the default device, therefore we won't change its default.
 
 \begin{center}
 <<modelFitting,fig=TRUE,echo=TRUE>>=
-LPSfit <- plgem.fit(data=LPSeset, covariateNumb=1, fit.condition=1, p=10, q=0.5,
+LPSfit <- plgem.fit(data=LPSeset, covariate=1, fitCondition='C', p=10, q=0.5,
   plot.file=FALSE, fittingEval=TRUE, verbose=TRUE)
 @
 \end{center}
@@ -121,10 +121,10 @@ Therefore it is necessary to give to the \Rfunction{plgem.obsStn} function the
 model parameters \Rfunarg{slope} and \Rfunarg{intercept} determined during the
 model fitting that are contained in the value returned by \Rfunction{plgem.fit}
 function. By default, all experimental conditions (according to the values of
-the \Rfunarg{covariateNumb} covariate defined in the \Rclass{phenoData} slot of
+the \Rfunarg{covariate} defined in the \Rclass{phenoData} slot of
 the \Rclass{ExpressionSet}) are compared to the first condition (baseline). If
 the condition to be treated as the baseline is not the first one, you can change
-this by modifying the argument \Rfunarg{baseline.condition}. A matrix of
+this by modifying the argument \Rfunarg{baselineCondition}. A matrix of
 observed STN is determined, where the number of rows are the number of genes or
 proteins in the dataset and the number of columns are the number of comparisons
 that can be performed in the dataset (i.e. the total number of experimental
@@ -133,7 +133,7 @@ be compared to the baseline, therefore the matrix will be a one-dimensional
 array of observed PLGEM-STN values.
 
 <<observedSTN, echo=TRUE>>=
-LPSobsStn <- plgem.obsStn(data=LPSeset, covariateNumb=1, baseline.condition=1,
+LPSobsStn <- plgem.obsStn(data=LPSeset, covariate=1, baselineCondition=1,
   plgemFit=LPSfit, verbose=TRUE)
 @
 
@@ -150,6 +150,7 @@ threshold of 500 iterations is set to avoid excessive computation time. This
 should be fine for most purposes.
 
 <<resampledSTN, echo=TRUE>>=
+set.seed(123)
 LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit,
   iterations="automatic", verbose=TRUE)
 @

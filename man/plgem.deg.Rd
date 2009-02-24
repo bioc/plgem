@@ -25,14 +25,15 @@
 }
 \details{
   This function allows for the selection of DEG by setting a significance
-  cut-off on pre-calculated p-values. The significance level \sQuote{delta}
+  cut-off on pre-calculated p-values. The significance level \code{delta}
   roughly represents the false positive rate of the DEG selection, e.g. if a
-  \sQuote{delta} of 0.001 is chosen in a microarray dataset with 10000 genes,
-  on average 10 of the selected DEG are expected to be false positives.
+  \code{delta} of 0.001 is chosen in a microarray dataset with 10,000 genes
+  (none of which is truly differentially expressed), 10 genes/proteins will be
+  selected by chance alone.
 }
 \value{
   This function returns a list with a number of items equal to the number of
-  different significance levels (\sQuote{delta}) used as input. Each item of
+  different significance levels (\code{delta}) used as input. Each item of
   this list is again a list, whose number of items correspond to the number of
   performed comparisons (i.e. the number of conditions in the starting
   \code{ExpressionSet} minus the baseline). Each of these second level

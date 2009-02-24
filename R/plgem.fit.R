@@ -1,4 +1,4 @@
-"plgem.fit" <- function(data, covariateNumb=1, fit.condition=1, p=10, q=0.5,
+"plgem.fit" <- function(data, covariate=1, fitCondition=1, p=10, q=0.5,
   trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE,
   plot.file=FALSE, verbose=FALSE) {
   
@@ -6,10 +6,13 @@
 	library(MASS)
 
 	# some checks..
-	if(class(data)!="ExpressionSet") stop("Object 'data' in function plgem.fit is not of class 'ExpressionSet'")
-	if(class(covariateNumb)!="numeric" && class(covariateNumb)!="integer") stop("Argument 'covariateNumb' is not of class 'numeric' or 'integer'")
-	if(as.integer(covariateNumb) > ncol(pData(data))) stop("Argument 'covariateNumb' is greater than the number of covariates in 'data'")
-	if(class(fit.condition)!="numeric" && class(fit.condition)!="integer") stop("Argument 'fit.condition' is not of class 'numeric' or 'integer'")
+	if(class(data) != "ExpressionSet") stop("Object 'data' in function plgem.fit is not of class 'ExpressionSet'")
+
+  covariate <- .checkCovariate(covariate, pData(data))
+	condition.names <- as.character(pData(data)[, covariate])
+
+  fitCondition <- .checkCondition(fitCondition, "fitCondition", condition.names)
+
 	if(class(p)!="numeric" && class(p)!="integer") stop("Argument 'p' is not of class 'numeric' or 'integer'")
 	if(class(q)!="numeric" && class(q)!="integer") stop("Argument 'q' is not of class 'numeric' or 'integer'")
 	if(!(q >= 0 && q <= 1)) stop("Argument 'q' is not in the range [0, 1]")
@@ -20,9 +23,7 @@
 	if(verbose) cat("Fitting PLGEM...\n")
 
 	if(verbose) cat("samples extracted for fitting:\n")
-	condition.names <- as.character(pData(data)[,covariateNumb])
-	condition.name <- unique(condition.names)
-	data <- data[, which(condition.names==condition.name[fit.condition])]
+	data <- data[, which(condition.names == fitCondition)]
 	if(verbose) print(pData(data))
 	if(length(sampleNames(data)) < 2) stop("At least 2 replicates needed to fit PLGEM")
 
@@ -127,5 +128,5 @@
 	if(verbose) cat("done with fitting PLGEM.\n\n")
 	gc()
 	return(list(SLOPE=slope, INTERCEPT=intercept, DATA.PEARSON=data.pearson,
-    ADJ.R2.MP=adj.r2.mp, FIT.CONDITION=fit.condition))
+    ADJ.R2.MP=adj.r2.mp, COVARIATE=covariate, FIT.CONDITION=fitCondition))
 }
