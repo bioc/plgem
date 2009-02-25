@@ -3,7 +3,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 	library(Biobase)
 
 	#some checks...
-	if(class(data)!="ExpressionSet") stop("Object data in function plgem.obsStn is not of class ExpressionSet")
+	.checkExpressionSet(data)
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.obsStn is not of class list")
 
   covariate <- .checkCovariate(covariate, pData(data))

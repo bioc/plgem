@@ -6,12 +6,13 @@
 }
 \description{
   This \code{ExpressionSet} object contains a subset of the microarray data used
-  in References for \bold{PLGEM} set up and validation. Briefly, it contains
+  in References for \bold{PLGEM} set-up and validation. Briefly, it contains
   normalized gene expression values from a total of 6 hybridizations on
   MG-U74Av2 Affymetrix GeneChip microarrays. Two experimental conditions are
-  represented in this dataset: The baseline condition (C) contains data of
-  immature murine dendritic cells (4 replicates); the other condition (LPS)
-  contains data of the same cells stimulated for 4 hours with LPS (2 replicates).
+  represented in this dataset: the baseline condition (\sQuote{C}) contains data
+  of immature murine dendritic cells (4 replicates); the other condition
+  (\sQuote{LPS}) contains data of the same cells stimulated for 4 hours with LPS
+  (2 replicates).
 }
 \usage{
   data(LPSeset)

@@ -5,9 +5,8 @@
 }
 \description{
   This function automatically performs \bold{PLGEM} fitting and evaluation,
-  determination of observed and resampled \bold{PLGEM} STN values, and
-  selection of differentially expressed genes/proteins (DEG) using the
-  \bold{PLGEM} method.
+  determination of observed and resampled PLGEM-STN values, and selection of
+  differentially expressed genes/proteins (DEG) using the \bold{PLGEM} method.
 }
 \usage{
   run.plgem(esdata, signLev=0.001, rank=100, covariate=1,
@@ -66,9 +65,9 @@
   \code{integer} or a \code{numeric} is given, it will be taken as the covariate
   number (in the same order in which the covariates appear in the
   \code{colnames} of the \code{pData}). If a \code{character} is given, it will
-  be taken as the covariate name (in the same way the covariates are specified
-  in the \code{colnames} of the \code{pData}). By default, the first covariate
-  appearing in the \code{colnames} of the \code{pData} is used.
+  be taken as the covariate name itself (in the same way the covariates are
+  specified in the \code{colnames} of the \code{pData}). By default, the first
+  covariate appearing in the \code{colnames} of the \code{pData} is used.
   
   Similarly, there is a couple different ways how to specify which experimental
   condition to treat as the baseline. The available \sQuote{condition names} are
@@ -76,13 +75,13 @@
   \code{baselineCondition} is given as a \code{character}, it will be taken as
   the condition name itself. If \code{baselineCondition} is given as an
   \code{integer} or a \code{numeric} value, it will be taken as the condition
-  number (in the same order of appearance in the \sQuote{condition names}). By
-  default, the first appearing condition name is used.
+  number (in the same order of appearance as in the \sQuote{condition names}).
+  By default, the first condition name is used.
   
   The model is fitted on the most replicated condition. When more conditions
   exist with the maximum number of replicates, the condition providing the best
-  fit is chosen (based on the adjusted r^2). If there is again a tie, the first
-  one is arbitrarily taken.
+  fit is chosen (based on the adjusted r square). If there is again a tie, the
+  first one is arbitrarily taken.
 
   If less than 3 replicates are provided for the condition used for fitting,
   then the selection is based on ranking according to the observed PLGEM-STN
@@ -126,6 +125,6 @@
 \examples{
   data(LPSeset)
   set.seed(123)
-  LPSdegList <- run.plgem(esdata=LPSeset)
+  LPSdegList <- run.plgem(esdata=LPSeset, fitting.eval=FALSE)
 }
 \keyword{models}

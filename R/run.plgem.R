@@ -2,7 +2,7 @@
 function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iterations="automatic", trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fitting.eval=TRUE, plotFile=FALSE, writeFiles = FALSE, Verbose=FALSE) {
 
 	#some checks
-	if(class(esdata)!="ExpressionSet") stop("Argument 'esdata' is not of class 'ExpressionSet'.")
+	.checkExpressionSet(esdata)
 	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument 'signLev' is not of class 'numeric' or 'integer'")
 	if(!(signLev >= 0 && signLev <= 1)) stop("Argument 'signLev' is not in the range [0,1]")
 	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument 'rank' is not of class 'numeric' or 'integer'.")

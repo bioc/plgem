@@ -2,7 +2,7 @@
 function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic", verbose=FALSE) {
 
 	#some checks...
-	if(class(data)!="ExpressionSet") stop("Object data in function plgem.resampledStn is not of class ExpressionSet")
+	.checkExpressionSet(data)
 
   covariate <- .checkCovariate(covariate, pData(data))
 	condition.names <- as.character(pData(data)[, covariate])

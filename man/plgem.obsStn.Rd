@@ -6,8 +6,7 @@
   These functions compute observed and resampled signal-to-noise ratio (STN)
   values using \bold{PLGEM} fitting parameters (obtained via a call to
   function \code{\link{plgem.fit}}) to detect differential expression in an
-  \code{ExpressionSet} \sQuote{data}, containing either microarray or proteomics
-  data.
+  \code{ExpressionSet}, containing either microarray or proteomics data.
 }
 \usage{
   plgem.obsStn(data, plgemFit, covariate=1, baselineCondition=1,
@@ -45,9 +44,9 @@
   \code{integer} or a \code{numeric} is given, it will be taken as the covariate
   number (in the same order in which the covariates appear in the
   \code{colnames} of the \code{pData}). If a \code{character} is given, it will
-  be taken as the covariate name (in the same way the covariates are specified
-  in the \code{colnames} of the \code{pData}). By default, the first covariate
-  appearing in the \code{colnames} of the \code{pData} is used.
+  be taken as the covariate name itself (in the same way the covariates are
+  specified in the \code{colnames} of the \code{pData}). By default, the first
+  covariate appearing in the \code{colnames} of the \code{pData} is used.
   
   Similarly, there is a couple different ways how to specify which experimental
   condition to treat as the baseline. The available \sQuote{condition names} are
@@ -55,15 +54,15 @@
   \code{baselineCondition} is given as a \code{character}, it will be taken as
   the condition name itself. If \code{baselineCondition} is given as an
   \code{integer} or a \code{numeric} value, it will be taken as the condition
-  number (in the same order of appearance in the \sQuote{condition names}). By
-  default, the first appearing condition name is used.
+  number (in the same order of appearance as in the \sQuote{condition names}).
+  By default, the first condition name is used.
   
   PLGEM-STN values are a measure of the degree of differential expression
-  between a condition and the baseline:
-
-  PLGEM-STN = [mean(condition)-mean(baseline)] / [modeledSpread(condition)+modeledSpread(baseline)],
-
-  where: ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept
+  between a condition and the baseline: \deqn{
+  STN = \frac{mean_{condition}-mean_{baseline}}{modeledSpread_{condition}+modeledSpread_{baseline}},}{%
+  STN = [mean(condition)-mean(baseline)] / [modeledSpread(condition)+modeledSpread(baseline)],}
+  where: \deqn{\log{modeledSpread} = PLGEMslope * \log{mean} + PLGEMintercept}{%
+  ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept}
 
   \code{plgem.obsStn} determines the observed PLGEM-STN values for each gene
   or protein in \code{data}. \code{plgem.resampledStn} determines the resampled
@@ -113,7 +112,7 @@
   LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit)
   plot(density(LPSresampledStn[["RESAMPLED.STN"]], bw=0.01), col="black", lwd=2,
     xlab="PLGEM STN values",
-    main="Distribution of observed and resampled PLGEM STN values")
+    main="Distribution of observed\nand resampled PLGEM-STN values")
   lines(density(LPSobsStn, bw=0.01), col="red")
   legend("topright", legend=c("resampled", "observed"), col=c("black", "red"),
     lwd=2:1)

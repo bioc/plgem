@@ -11,7 +11,7 @@
   plgem.pValue(observedStn, plgemResampledStn, verbose=FALSE)
 }
 \arguments{
-  \item{observedStn}{\code{matrix} of observed PLGEM STN values; output of
+  \item{observedStn}{\code{matrix} of observed PLGEM-STN values; output of
     function \code{\link{plgem.obsStn}}.}
   \item{plgemResampledStn}{\code{list}; output of function
     \code{\link{plgem.resampledStn}}.}
@@ -21,14 +21,14 @@
 \details{
   The p-value of each given observed STN value is computed based on the quantile
   that the given value occupies in the corresponding distribution of
-  resampled PLGEM STN values, based on the following relationship:
-  
-  p-value = min(2*quantile, 2*(1-quantile))
+  resampled PLGEM-STN values, based on the following relationship:
+  \deqn{P=min(2*quantile, 2*(1-quantile))}{%
+  p-value = min(2*quantile, 2*(1-quantile))}
 }
 \value{
   \code{plgem.pValue} returns a matrix with the same \code{\link{dim}}ensions
   and \code{\link{dimnames}} as the input \code{observedStn}, where each entry
-  represents the p-value of the corresponding observed PLGEM STN value.
+  represents the p-value of the corresponding observed PLGEM-STN value.
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,

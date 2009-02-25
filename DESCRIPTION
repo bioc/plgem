@@ -1,6 +1,6 @@
 Package: plgem
 Title: Power Law Global Error Model
-Version: 1.15.6
+Version: 1.15.7
 Author: Mattia Pelizzola <mattia.pelizzola@gmail.com> and Norman
         Pavelka <nxp@stowers.org>
 Description: PLGEM is useful for detecting differential expression in

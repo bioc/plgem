@@ -41,14 +41,13 @@
 }
 \details{
   \code{plgem.fit} fits a Power Law Global Error Model (\bold{PLGEM}) to an
-  expression set and optionally evaluates the quality of the fit. This
+  \code{ExpressionSet} and optionally evaluates the quality of the fit. This
   \bold{PLGEM} aims to find the mathematical relationship between standard
   deviation and mean gene expression values (or protein abundance levels) in a
   set of replicated microarray (or proteomics) samples, according to the
   following power law:
-
-  ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept
-
+  \deqn{\log{modeledSpread}=PLGEMslope*\log{mean}+PLGEMintercept}{%
+  ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept}
   It has been demonstrated that this model fits to Affymetrix GeneChip datasets,
   as well as to datasets of normalized spectral counts obtained by mass
   spectrometry-based proteomics (see References for details).
@@ -66,9 +65,9 @@
   \code{integer} or a \code{numeric} is given, it will be taken as the covariate
   number (in the same order in which the covariates appear in the
   \code{colnames} of the \code{pData}). If a \code{character} is given, it will
-  be taken as the covariate name (in the same way the covariates are specified
-  in the \code{colnames} of the \code{pData}). By default, the first covariate
-  appearing in the \code{colnames} of the \code{pData} is used.
+  be taken as the covariate name itself (in the same way the covariates are
+  specified in the \code{colnames} of the \code{pData}). By default, the first
+  covariate appearing in the \code{colnames} of the \code{pData} is used.
   
   Similarly, there is a couple different ways to specify on which experimental
   condition to fit the model. The available \sQuote{condition names} are taken
@@ -76,10 +75,10 @@
   \code{fitCondition} is given as a \code{character}, it will be taken as the
   condition name itself. If \code{fitCondition} is given as an \code{integer}
   or a \code{numeric} value, it will be taken as the condition number (in the
-  same order of appearance in the \sQuote{condition names}). By default, the
-  first appearing condition name is used.
+  same order of appearance as in the \sQuote{condition names}). By default, the
+  first condition name is used.
   
-  Setting \code{trimAllZeroRows = TRUE} is especially useful in proteomics data
+  Setting \code{trimAllZeroRows=TRUE} is especially useful in proteomics data
   sets, where there is no guarantee of identifying a protein across all
   experimental conditions. Since \bold{PLGEM} is fitted only to the data
   corresponding to a single experimental condition (as defined by
@@ -87,18 +86,18 @@
   rows containing only zero values, even if there were no such rows in the
   original (complete) data set containing all experimental conditions.
 
-  Setting \code{zeroMeanOrSD = "replace"} (the current default, for backward
+  Setting \code{zeroMeanOrSD="replace"} (the current default, for backward
   compatibility) will cause the function to replace zero or negative means with
   the smallest positive mean found in the data set and to replace zero standard
   deviations with the smallest non-zero standard deviation found in the data
-  set. Setting \code{zeroMeanOrSD = "trim"} is the current recommended option,
+  set. Setting \code{zeroMeanOrSD="trim"} is the current recommended option,
   especially for spectral counting proteomics data sets that are typically
   characterized by a high data granularity or for microarray data sets with a
   small number of replicates. In both cases, there are chances for data values
   for a same gene or protein to be identical across replicates (and therefore
   with zero standard deviation) by chance alone. Note that setting
-  \code{trimAllZeroRows = TRUE} does not guarantee that there will be no rows
-  with zero mean or zero standard deviation.
+  \code{trimAllZeroRows=TRUE} does not guarantee that there will be no rows with
+  zero mean or zero standard deviation.
 
   If argument \code{fittingEval} is set to \code{TRUE}, a graphical control of
   the goodness of the \bold{PLGEM} fitting is produced and a plot containing
@@ -142,7 +141,7 @@
 }
 \examples{
   data(LPSeset)
-  LPSfit <- plgem.fit(data=LPSeset, fittingEval=FALSE)
-  sapply(LPSfit, function(x) return(as.vector(x)))
+  LPSfit <- plgem.fit(data=LPSeset, fittingEval=TRUE)
+  as.data.frame(LPSfit)
 }
 \keyword{models}

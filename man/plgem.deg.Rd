@@ -28,8 +28,8 @@
   cut-off on pre-calculated p-values. The significance level \code{delta}
   roughly represents the false positive rate of the DEG selection, e.g. if a
   \code{delta} of 0.001 is chosen in a microarray dataset with 10,000 genes
-  (none of which is truly differentially expressed), 10 genes/proteins will be
-  selected by chance alone.
+  (none of which is truly differentially expressed), on average 10
+  genes/proteins are expected to be selected by chance alone.
 }
 \value{
   This function returns a list with a number of items equal to the number of
@@ -63,11 +63,12 @@
 }
 \examples{
   data(LPSeset)
-  LPSfit <- plgem.fit(data=LPSeset, fittingEval=TRUE)
+  LPSfit <- plgem.fit(data=LPSeset, fittingEval=FALSE)
   LPSobsStn <- plgem.obsStn(data=LPSeset, plgemFit=LPSfit)
   set.seed(123)
   LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit)
   LPSpValues <- plgem.pValue(LPSobsStn, LPSresampledStn)
-  LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues, delta=0.001)
+  LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues,
+    delta=0.001)
 }
 \keyword{models}

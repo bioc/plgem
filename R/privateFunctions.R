@@ -2,6 +2,17 @@
 # private functions of the 'plgem' package
 # ==========================================================================
 
+# check input ExpressionSet
+.checkExpressionSet <- function(eset) {
+  funCall <- as.character(sys.call(-1))[1]
+  if (class(eset) != "ExpressionSet") {
+    stop("Input dataset for function '", funCall, "' is not of class 'ExpressionSet'.")
+  }
+  if (ncol(pData(eset)) < 1) {
+    stop("No covariates defined in the input 'ExpressionSet' for function '", funCall, "'.")
+  }
+}
+
 # check input covariate for consistency with phenoData
 .checkCovariate <- function(covar, pdat) {
   if (length(covar) > 1) {

@@ -6,7 +6,7 @@
 	library(MASS)
 
 	# some checks..
-	if(class(data) != "ExpressionSet") stop("Object 'data' in function plgem.fit is not of class 'ExpressionSet'")
+	.checkExpressionSet(data)
 
   covariate <- .checkCovariate(covariate, pData(data))
 	condition.names <- as.character(pData(data)[, covariate])

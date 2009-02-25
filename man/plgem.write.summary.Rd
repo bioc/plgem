@@ -46,10 +46,10 @@
   \code{\link{plgem.deg}}, \code{\link{run.plgem}}
 }
 \examples{
-  ## Not run:
+  \dontrun{
   data(LPSeset)
-  LPSdegList <- run.plgem(LPSeset)
+  LPSdegList <- run.plgem(LPSeset, fitting.eval=FALSE)
   plgem.write.summary(LPSdegList, verbose=TRUE)
-  ## End(Not run)
+  }
 }
 \keyword{models}

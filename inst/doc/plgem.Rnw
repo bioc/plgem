@@ -123,7 +123,7 @@ model fitting that are contained in the value returned by \Rfunction{plgem.fit}
 function. By default, all experimental conditions (according to the values of
 the \Rfunarg{covariate} defined in the \Rclass{phenoData} slot of
 the \Rclass{ExpressionSet}) are compared to the first condition (baseline). If
-the condition to be treated as the baseline is not the first one, you can change
+the condition to be treated as the baseline is not the first one, we can change
 this by modifying the argument \Rfunarg{baselineCondition}. A matrix of
 observed STN is determined, where the number of rows are the number of genes or
 proteins in the dataset and the number of columns are the number of comparisons
@@ -140,7 +140,7 @@ LPSobsStn <- plgem.obsStn(data=LPSeset, covariate=1, baselineCondition=1,
 \subsection{Computation of resampled signal-to-noise ratios}
 
 In order to get an estimate of the distribution of the test statistic under the
-null-hypothesis of not differential expression, a resampled statistic is
+null hypothesis of no differential expression, a resampled statistic is
 determined using the method described in the paper \cite{bmc}. The number of
 iterations of the resampling step should be correlated with the total number of
 replicates that are present in the data set. If this argument is set to
