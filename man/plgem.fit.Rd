@@ -46,11 +46,13 @@
   deviation and mean gene expression values (or protein abundance levels) in a
   set of replicated microarray (or proteomics) samples, according to the
   following power law:
-  \deqn{\log{modeledSpread}=PLGEMslope*\log{mean}+PLGEMintercept}{%
+  \deqn{\log{(modeledSpread)}=PLGEMslope*\log{(mean)}+PLGEMintercept}{%
   ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept}
   It has been demonstrated that this model fits to Affymetrix GeneChip datasets,
   as well as to datasets of normalized spectral counts obtained by mass
-  spectrometry-based proteomics (see References for details).
+  spectrometry-based proteomics. Technically, two replicates are required and
+  sufficient to fit a \bold{PLGEM}. Having 3 or more replicates, of course,
+  improves the fitting and is recommended (see References for details).
   
   The \code{phenoData} slot of the \code{ExpressionSet} given as input is
   expected to contain the necessary information to distinguish the various
@@ -115,8 +117,8 @@
   \item{INTERCEPT}{the intercept of the fitted PLGEM.}
   \item{DATA.PEARSON}{the Pearson correlation coefficient of the linear model
   fitted on the original data.}
-  \item{ADJ.R2.MP}{the adjusted R squared of PLGEM fitted on the modelling
-  points.}
+  \item{ADJ.R2.MP}{the adjusted \eqn{r^{2}}{r^2} of PLGEM fitted on the
+  modelling points.}
   \item{COVARIATE}{the covariate used for fitting the PLGEM.}
   \item{FIT.CONDITION}{the condition used for fitting the PLGEM.}
 }
@@ -129,10 +131,11 @@
   Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
   Florens L, Washburn MP. Statistical similarities between transcriptomics and
   quantitative shotgun proteomics data. Mol Cell Proteomics. 2008 Apr;
-  7(4):631-44; \url{http://www.mcponline.org/cgi/content/full/7/4/631}.
+  7(4):631-44; \url{http://www.mcponline.org/cgi/content/abstract/7/4/631}.
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+
   Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{

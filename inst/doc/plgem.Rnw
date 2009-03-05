@@ -45,7 +45,7 @@ The wrapper automatically attempts to find the best solution at each step, and
 requires only modest or no input decisions by the user. For didactic purposes,
 we will use here a subset of the microarray dataset used in the original
 publication about \textbf{PLGEM}, containing two replicates of LPS-stimulated
-dendritic cells ('LPS') and four replicates of untreated dendritic cells ('C'):
+dendritic cells (`LPS') and four replicates of untreated dendritic cells (`C'):
 
 <<PLGEMwrapper, echo=TRUE, results=hide>>=
 library(plgem)
@@ -56,7 +56,7 @@ LPSdegList <- run.plgem(esdata=LPSeset)
 
 The above obtained object \Robject{LPSdegList} will contain the list of genes or
 proteins, selected as significantly changing between experimental condition
-'LPS' and baseline condition 'C', at the default significance level 0.001.
+`LPS' and baseline condition `C', at the default significance level 0.001.
 
 \section{Running \textbf{PLGEM} in \emph{step-by-step} mode}
 
@@ -74,21 +74,24 @@ expression value or average protein abundance level.
 
 \textbf{PLGEM} can only be fitted on a set of replicates of a same experimental
 condition, therefore we first need to choose which condition to use for the
-fitting step. In our dataset two conditions are provided: 'C' and 'LPS'.
-Usually the most replicated one is chosen, therefore we choose the first
-condition 'C' (i.e. \Rfunarg{fitCondition='C'}), because it contains four
-replicates.
+fitting step. In our dataset two conditions are provided: `C' and `LPS'. Usually
+the most replicated one is chosen, in this example we will therefore choose the
+first condition `C' (i.e. \Rfunarg{fitCondition="C"}), because it contains four
+replicates. Technically, we may have decided to fit the model also on the two
+`LPS' samples, as two replicates are required and sufficient to fit a PLGEM. But
+having 3 or more replicates improves the fitting and is usually recommended
+\cite{mcp}.
 
 Moreover, we can can change the default values of parameters \Rfunarg{p} and
 \Rfunarg{q}. Briefly, \Rfunarg{p} represents the number of intervals (or bins)
-used to partition the expression value range of the dataset. In the original
-publication we observed that \Rfunarg{p} can be modified over a wide range of
-values, without any major effects on the final results, except when it was
-chosen to close to the total number of genes or proteins in the dataset
-\cite{bmc}. As a rule of thumb, \Rfunarg{p} should be no more than one tenth of
-the number of genes or proteins. The default of 10 should therefore be OK for
-most microarray experiments, but could be set lower for proteomics data where
-less than 100 proteins were identified.
+used to partition the expression value range of the dataset. We observed that
+\Rfunarg{p} can be modified over a wide range of values, without any major
+effects on the final results, except when it was chosen to close to the total
+number of genes or proteins in the dataset \cite{bmc}. As a rule of thumb,
+\Rfunarg{p} should be no more than one tenth of the number of genes or proteins.
+The default of 10 should therefore be appropriate for most microarray
+experiments, but could be set lower for proteomics data where less than 100
+proteins were identified.
 
 \Rfunarg{q} is the quantile of the location-dependent spread used to fit the
 model. The default of \Rfunarg{q} is set to 0.5, because this represents the

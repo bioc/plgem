@@ -9,9 +9,8 @@
 	.checkExpressionSet(data)
 
   covariate <- .checkCovariate(covariate, pData(data))
-	condition.names <- as.character(pData(data)[, covariate])
 
-  fitCondition <- .checkCondition(fitCondition, "fitCondition", condition.names)
+  fitCondition <- .checkCondition(fitCondition, "fitCondition", covariate, pData(data))
 
 	if(class(p)!="numeric" && class(p)!="integer") stop("Argument 'p' is not of class 'numeric' or 'integer'")
 	if(class(q)!="numeric" && class(q)!="integer") stop("Argument 'q' is not of class 'numeric' or 'integer'")
@@ -22,6 +21,7 @@
 
 	if(verbose) cat("Fitting PLGEM...\n")
 
+	condition.names <- as.character(pData(data)[, covariate])
 	if(verbose) cat("samples extracted for fitting:\n")
 	data <- data[, which(condition.names == fitCondition)]
 	if(verbose) print(pData(data))

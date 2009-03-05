@@ -61,7 +61,7 @@
   between a condition and the baseline: \deqn{
   STN = \frac{mean_{condition}-mean_{baseline}}{modeledSpread_{condition}+modeledSpread_{baseline}},}{%
   STN = [mean(condition)-mean(baseline)] / [modeledSpread(condition)+modeledSpread(baseline)],}
-  where: \deqn{\log{modeledSpread} = PLGEMslope * \log{mean} + PLGEMintercept}{%
+  where: \deqn{\log{(modeledSpread)}=PLGEMslope*\log{(mean)}+PLGEMintercept}{%
   ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept}
 
   \code{plgem.obsStn} determines the observed PLGEM-STN values for each gene
@@ -94,10 +94,11 @@
   Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
   Florens L, Washburn MP. Statistical similarities between transcriptomics and
   quantitative shotgun proteomics data. Mol Cell Proteomics. 2008 Apr;
-  7(4):631-44; \url{http://www.mcponline.org/cgi/content/full/7/4/631}.
+  7(4):631-44; \url{http://www.mcponline.org/cgi/content/abstract/7/4/631}.
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+
   Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{

@@ -9,7 +9,7 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 
   covariate <- .checkCovariate(covariate, pData(esdata))
   condition.names <- as.character(pData(esdata)[, covariate])
-  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", condition.names)
+  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(esdata))
 
 	if(Iterations!="automatic" && class(Iterations)!="numeric" && class(Iterations)!="integer") stop("Argument 'Iterations' is neither of class 'numeric' (or 'integer') nor equal to 'automatic'.")
 	if(class(fitting.eval)!="logical") stop("Argument 'fitting.eval' is not of class 'logical'.")

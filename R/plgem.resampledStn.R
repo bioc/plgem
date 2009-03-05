@@ -7,7 +7,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic
   covariate <- .checkCovariate(covariate, pData(data))
 	condition.names <- as.character(pData(data)[, covariate])
 
-  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", condition.names)
+  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(data))
 
 	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.resampledStn is not of class list")
 	if(iterations!="automatic" && class(iterations)!="numeric" && class(iterations)!="integer") stop("Argument iterations in function plgem.resampledStn is neither of class numeric (or integer) nor equal to 'automatic'")

@@ -6,50 +6,76 @@
 .checkExpressionSet <- function(eset) {
   funCall <- as.character(sys.call(-1))[1]
   if (class(eset) != "ExpressionSet") {
-    stop("Input dataset for function '", funCall, "' is not of class 'ExpressionSet'.")
+    stop("Input dataset for function ", sQuote(funCall), " is not of class ",
+      sQuote("ExpressionSet"), ".")
   }
   if (ncol(pData(eset)) < 1) {
-    stop("No covariates defined in the input 'ExpressionSet' for function '", funCall, "'.")
+    stop("No covariates defined in the input ExpressionSet for function ",
+      sQuote(funCall), ".")
   }
 }
 
 # check input covariate for consistency with phenoData
 .checkCovariate <- function(covar, pdat) {
+  funCall <- as.character(sys.call(-1))[1]
   if (length(covar) > 1) {
     covar <- covar[1]
-    warning("Multiple covariates specified. Only the first one will be used.")
+    warning("Multiple covariates specified in ", sQuote(funCall),
+      ". Only the first one will be used.")
   }
   if (class(covar) == "numeric" || class(covar) == "integer") {
-    if(covar < 1) stop("Argument 'covariate' must be >= 1.")
-    if(as.integer(covar) > ncol(pdat)) stop("Argument 'covariate' is greater than the number of covariates in the ExpressionSet.")
+    if(covar < 1) stop("Argument ", sQuote("covariate"), " for function ",
+      sQuote(funCall), " must be >= 1.")
+    if(as.integer(covar) > ncol(pdat)) stop("Argument ", sQuote("covariate"),
+      " is greater than the number of covariates in the input ExpressionSet for function ",
+      sQuote(funCall), ".")
     return(colnames(pdat)[as.integer(covar)])
   }
   if (class(covar) == "character") {
-    if(!(covar %in% colnames(pdat))) stop ("covariate '", covar, "' is not defined in the ExpressionSet.")
+    if(!(covar %in% colnames(pdat))) stop ("covariate ", sQuote(covar),
+      " is not defined in the input ExpressionSet for function ",
+      sQuote(funCall), ".")
     return(covar)
   }
-  if (class(covar) != "numeric" && class(covar) != "integer" && class(covar) != "character") {
-    stop("Argument 'covariate' must be one of class 'numeric', 'integer' or 'character'.")
+  if (class(covar) != "numeric" && class(covar) != "integer" &&
+    class(covar) != "character") {
+    stop("Argument ", sQuote("covariate"), " for function ", sQuote(funCall),
+      " must be one of class ", sQuote("numeric"), ", ", sQuote("integer"),
+      " or ", sQuote("character"), ".")
   }
 }
 
 # check input condition for consistency with phenoData
-.checkCondition <- function(cond, argName, vars) {
+.checkCondition <- function(cond, argName, covar, pdat) {
+  funCall <- as.character(sys.call(-1))[1]
+  vars <- unique(as.character(pdat[, covar]))
   if (length(cond) > 1) {
     cond <- cond[1]
-    warning("Multiple conditions specified. Only the first one will be used.")
+    warning("Multiple conditions specified in ", sQuote(funCall),
+      ". Only the first one will be used.")
   }
   if (class(cond) == "numeric" || class(cond) == "integer") {
-    if(cond < 1) stop("Argument '", argName, "' must be >= 1.")
-    if(as.integer(cond) > length(unique(vars))) stop("Argument '", argName, "' is greater than the number of covariates in the ExpressionSet.")
-    return(unique(vars)[as.integer(cond)])
+    if(cond < 1) stop("Argument ", sQuote(argName), " for function ",
+      sQuote(funCall), " must be >= 1.")
+    if(as.integer(cond) > length(unique(vars))) {
+      stop("Argument ", sQuote(argName),
+        " is greater than the number of conditions in the input ExpressionSet for function ",
+      sQuote(funCall), ".")
+    }
+    return(vars[as.integer(cond)])
   }
   if (class(cond) == "character") {
-    if(!(cond %in% vars)) stop("condition '", cond, "' is not defined in the ExpressionSet.")
+    if(!(cond %in% vars)) {
+      stop("condition ", sQuote(cond),
+      " is not defined in the input ExpressionSet for function ",
+        sQuote(funCall), ".")
+    }
     return(cond)
   }
   if (class(cond) != "numeric" && class(cond) != "integer" && class(cond) != "character") {
-    stop("Argument '", argName, "' must be one of class 'numeric', 'integer' or 'character'.")
+    stop("Argument ", sQuote(argName), " for function ", sQuote(funCall),
+      " must be one of class ", sQuote("numeric"), ", ", sQuote("integer"),
+      " or ", sQuote("character"), ".")
   }
 }
 

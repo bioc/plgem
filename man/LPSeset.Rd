@@ -28,6 +28,7 @@
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+
   Norman Pavelka \email{nxp@stowers.org}
 }
 \examples{

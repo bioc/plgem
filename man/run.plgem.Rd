@@ -80,8 +80,8 @@
   
   The model is fitted on the most replicated condition. When more conditions
   exist with the maximum number of replicates, the condition providing the best
-  fit is chosen (based on the adjusted r square). If there is again a tie, the
-  first one is arbitrarily taken.
+  fit is chosen (based on the adjusted \eqn{r^{2}}{r^2}). If there is again a
+  tie, the first one is arbitrarily taken.
 
   If less than 3 replicates are provided for the condition used for fitting,
   then the selection is based on ranking according to the observed PLGEM-STN
@@ -111,10 +111,11 @@
   Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
   Florens L, Washburn MP. Statistical similarities between transcriptomics and
   quantitative shotgun proteomics data. Mol Cell Proteomics. 2008 Apr;
-  7(4):631-44; \url{http://www.mcponline.org/cgi/content/full/7/4/631}.
+  7(4):631-44; \url{http://www.mcponline.org/cgi/content/abstract/7/4/631}.
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+
   Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{

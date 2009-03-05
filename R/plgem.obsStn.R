@@ -9,7 +9,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
   covariate <- .checkCovariate(covariate, pData(data))
 	condition.names <- as.character(pData(data)[, covariate])
 
-  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", condition.names)
+  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(data))
 
 	if(class(verbose)!="logical") stop("Argument verbose in function plgem.obsStn is not of class logical")
 	

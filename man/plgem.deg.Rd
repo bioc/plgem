@@ -5,10 +5,10 @@
 }
 \description{
   This function selects differentially expressed genes/proteins (DEG) at a given
-  significance level \sQuote{delta}, based on observed \bold{PLGEM}
-  signal-to-noise ratio (STN) values (typically obtained via a call to
-  \code{\link{plgem.obsStn}}) and pre-computed p-values (typically obtained via
-  a call to \code{\link{plgem.pValue}}).
+  significance level, based on observed \bold{PLGEM} signal-to-noise ratio (STN)
+  values (typically obtained via a call to \code{\link{plgem.obsStn}}) and
+  pre-computed p-values (typically obtained via a call to
+  \code{\link{plgem.pValue}}).
 }
 \usage{
   plgem.deg(observedStn, plgemPval, delta=0.001, verbose=FALSE)
@@ -50,10 +50,11 @@
   Pavelka N, Fournier ML, Swanson SK, Pelizzola M, Ricciardi-Castagnoli P,
   Florens L, Washburn MP. Statistical similarities between transcriptomics and
   quantitative shotgun proteomics data. Mol Cell Proteomics. 2008 Apr;
-  7(4):631-44; \url{http://www.mcponline.org/cgi/content/full/7/4/631}.
+  7(4):631-44; \url{http://www.mcponline.org/cgi/content/abstract/7/4/631}.
 }
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
+
   Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{
