@@ -1,7 +1,7 @@
 \name{plgem.deg}
 \alias{plgem.deg}
 \title{
-  Selection of differentially expressed genes/proteins using PLGEM
+  Selection of Differentially Expressed Genes/Proteins With PLGEM
 }
 \description{
   This function selects differentially expressed genes/proteins (DEG) at a given
@@ -14,8 +14,8 @@
   plgem.deg(observedStn, plgemPval, delta=0.001, verbose=FALSE)
 }
 \arguments{
-  \item{observedStn}{\code{matrix} of observed STN values; output of function
-    \code{\link{plgem.obsStn}}.}
+  \item{observedStn}{\code{list} containing a \code{matrix} of observed
+    PLGEM-STN values; output of function \code{\link{plgem.obsStn}}.}
   \item{plgemPval}{\code{matrix} of p-values; output of function
     \code{\link{plgem.pValue}}.}
   \item{delta}{numeric vector; the significance level(s) to be used for the
@@ -32,14 +32,20 @@
   genes/proteins are expected to be selected by chance alone.
 }
 \value{
-  This function returns a list with a number of items equal to the number of
-  different significance levels (\code{delta}) used as input. Each item of
-  this list is again a list, whose number of items correspond to the number of
-  performed comparisons (i.e. the number of conditions in the starting
-  \code{ExpressionSet} minus the baseline). Each of these second level
-  list-items is a vector of observed STN values of the genes or proteins that
-  passed the corresponding significance threshold in the corresponding
-  comparison.
+  A \code{list} of four elements:
+  \item{fit}{the input \code{plgemFit}.}
+  \item{PLGEM.STN}{the input \code{matrix} of observed PLGEM-STN values (see
+    \code{\link{plgem.obsStn}} for details).}
+  \item{p-value}{the input \code{matrix} of p-values (see
+    \code{\link{plgem.pValue}} for details).}
+  \item{significant}{a \code{list} with a number of elements equal to the number
+    of different significance levels (\code{delta}) used as input. Each element
+    of this list is again a list, whose number of elements correspond to the
+    number of performed comparisons (i.e. the number of conditions in the
+    starting \code{ExpressionSet} minus the baseline). Each of these second
+    level elements is a \code{character} vector of significant gene/protein
+    names that passed the statistical test at the corresponding significance
+    level.}
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,

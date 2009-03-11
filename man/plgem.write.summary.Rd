@@ -1,7 +1,7 @@
 \name{plgem.write.summary}
 \alias{plgem.write.summary}
 \title{
-  Write a list of differentially expressed genes/proteins to the disk
+  Write the Result of a PLGEM Analysis to the Working Directory
 }
 \description{
   This function writes the list of differentially expressed genes/proteins
@@ -9,11 +9,13 @@
   \code{\link{run.plgem}} to a series of files in the current working directory.
 }
 \usage{
-  plgem.write.summary(x, verbose=FALSE)
+  plgem.write.summary(x, prefix=NULL, verbose=FALSE)
 }
 \arguments{
   \item{x}{\code{list}; the output of either \code{\link{plgem.deg}} or
-    \code{\link{run.plgem}}, i.e. a list of list(s) of named vectors.}
+    \code{\link{run.plgem}} (see corresponding help papes for details).}
+  \item{prefix}{optional \code{character} to use as a prefix of the file names
+    to be written.}
   \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }
@@ -50,6 +52,6 @@
 \dontrun{
   data(LPSeset)
   LPSdegList <- run.plgem(LPSeset, fitting.eval=FALSE)
-  plgem.write.summary(LPSdegList, verbose=TRUE)}
+  plgem.write.summary(LPSdegList, prefix="test", verbose=TRUE)}
 }
 \keyword{models}

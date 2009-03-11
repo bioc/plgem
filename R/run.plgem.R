@@ -25,29 +25,33 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
   if(max(repl.number) < 2) stop ("PLGEM can not be fitted without replicates.")
 
 	#determination of the best condition on which to fit the model
-	if(length(which(repl.number==max(repl.number)))==1) {
+	if (Verbose) cat("determining the condition on which to fit the model...\n")
+	if (length(which(repl.number == max(repl.number))) == 1) {
 		#determination of the condition with the highest number of replicates
-		fitCondition <- names(repl.number)[which(repl.number == max(repl.number))]
-		if(Verbose) cat("fitCondition =", fitCondition, "\n")
+		fitCondition <- which(repl.number == max(repl.number))
 	} else {
-		#more than one condition has the highest number of replicates, therefore the one giving the best fit is chosen
-		max.indexes <- which(repl.number == max(repl.number))
-		adj.r <- array(, dim=length(max.indexes))
-		for(i in 1:length(adj.r)) {
-			adj.r[i]<-as.numeric(plgem.fit(data=esdata, covariate=covariate,
-      fitCondition=max.indexes[i], p=10, q=0.5, trimAllZeroRows=trimAllZeroRows,
-      zeroMeanOrSD=zeroMeanOrSD[1], verbose=FALSE)$ADJ.R2.MP)
-		}
-		if(Verbose) cat("adj.r",adj.r,"\n")
-		fitCondition<-max.indexes[which(adj.r==max(adj.r))]
-		if(length(fitCondition)>1) {
-			fitCondition<-fitCondition[1]
-			warning("PLGEM fits equally well on more than one condition. \n Condition ",condition.name[fitCondition]," used.\n")
-		}
-		else {
-			if(Verbose) cat("condition ", condition.name[fitCondition]," used \n")
+		#more than one condition has the highest number of replicates,
+    #therefore the one giving the best fit is chosen
+		if(Verbose) cat("more than one condition has the highest number of replicates.\n")
+    max.indexes <- which(repl.number == max(repl.number))
+    adj.r2 <- sapply(max.indexes, function(x) {
+      as.numeric(plgem.fit(data=esdata, covariate=covariate, fitCondition=x,
+      p=10, q=0.5, trimAllZeroRows=trimAllZeroRows,
+      zeroMeanOrSD=zeroMeanOrSD, verbose=FALSE)$ADJ.R2.MP)
+    })
+ 		if(Verbose) {
+      cat("adj. r^2:\n")
+      print(adj.r2)
+    }
+		fitCondition <- max.indexes[which(adj.r2 == max(adj.r2))]
+		if(length(fitCondition) > 1) {
+			fitCondition <- fitCondition[1]
+			warning("PLGEM fits equally well on more than one condition. Condition ",
+        sQuote(condition.name[fitCondition]), " used.\n")
 		}
 	}
+	fitCondition <- condition.name[fitCondition]
+ 	if (Verbose) cat("condition", sQuote(fitCondition), "used.\n")
 
 	# fitting and evaluating plgem
 	plgemFit <- plgem.fit(data=esdata, covariate=covariate,
@@ -64,10 +68,11 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 		col.counter<-0
 		for(i in setdiff(condition.name, baselineCondition)) {
 			col.counter <- col.counter+1
-			rankedIDs <- names(sort(abs(obs.stn[, col.counter]), decreasing=TRUE))[1:rank]
-			DEG.list[[i]] <- obs.stn[rankedIDs, col.counter]
-			names(DEG.list[[i]]) <- rankedIDs
+			DEG.list[[paste("first", rank, sep="")]][[i]] <-
+        names(sort(abs(obs.stn[["PLGEM.STN"]][, col.counter]),
+        decreasing=TRUE))[1:rank]
 		}
+		output <- c(obs.stn, list("p.value"=NULL, "significant"=DEG.list))
 	}
 	else {
 		# computing resampled STN statistics
@@ -75,10 +80,10 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
     # calculate p-value
     pValues <- plgem.pValue(obs.stn, res.stn, verbose=Verbose)
 		# DEG selection
-		DEG.list <- plgem.deg(obs.stn, pValues, delta=signLev, verbose=Verbose)
+		output <- plgem.deg(obs.stn, pValues, delta=signLev, verbose=Verbose)
 	}
 
-    if(writeFiles) plgem.write.summary(x = DEG.list, verbose = Verbose) # writing DEG list(s) on the disk
+  if(writeFiles) plgem.write.summary(x = DEG.list, verbose = Verbose) # writing DEG list(s) on the disk
 
-	return(DEG.list)
+	return(output)
 }

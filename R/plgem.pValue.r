@@ -2,8 +2,11 @@
 function(observedStn, plgemResampledStn, verbose=FALSE) {
 
 	#some checks
-	if(class(observedStn)!="matrix") {
-    stop("Object 'observedStn' is not of class 'matrix'.")
+	if(class(observedStn)!="list") {
+    stop("Object 'observedStn' is not of class 'list'.")
+  }
+	if(class(observedStn$PLGEM.STN)!="matrix") {
+    stop("Object 'observedStn$PLGEM.STN' is not of class 'matrix'.")
   }
 	if(class(plgemResampledStn)!="list") {
     stop("Object 'plgemResampledStn' is not of class 'list'.")
@@ -20,6 +23,7 @@ function(observedStn, plgemResampledStn, verbose=FALSE) {
   # preparing
   repl.number <- plgemResampledStn$REPL.NUMBER
   CDF <- apply(plgemResampledStn$RESAMPLED.STN, 2, ecdf)
+  observedStn <- observedStn$PLGEM.STN
   condition.name <- colnames(observedStn)
   pval <- array(, dim=dim(observedStn), dimnames=dimnames(observedStn))
   

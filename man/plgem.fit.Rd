@@ -112,15 +112,18 @@
   near normal distribution of residuals.
 }
 \value{
-\code{plgem.fit} returns a list of six numbers (see Details):
+  A \code{list} of six elements (see Details):
   \item{SLOPE}{the slope of the fitted PLGEM.}
   \item{INTERCEPT}{the intercept of the fitted PLGEM.}
-  \item{DATA.PEARSON}{the Pearson correlation coefficient of the linear model
-  fitted on the original data.}
+  \item{DATA.PEARSON}{the Pearson correlation coefficient between the
+    \eqn{\log{(sd)}}{log(sd)} and the \eqn{\log{(mean)}}{log(mean)} in the
+    original data.}
   \item{ADJ.R2.MP}{the adjusted \eqn{r^{2}}{r^2} of PLGEM fitted on the
-  modelling points.}
-  \item{COVARIATE}{the covariate used for fitting the PLGEM.}
-  \item{FIT.CONDITION}{the condition used for fitting the PLGEM.}
+    modelling points.}
+  \item{COVARIATE}{a \code{character} indicating the covariate used for
+    fitting.}
+  \item{FIT.CONDITION}{a \code{character} indicating the condition used for
+    fitting.}
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,

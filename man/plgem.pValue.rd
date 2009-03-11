@@ -11,10 +11,10 @@
   plgem.pValue(observedStn, plgemResampledStn, verbose=FALSE)
 }
 \arguments{
-  \item{observedStn}{\code{matrix} of observed PLGEM-STN values; output of
-    function \code{\link{plgem.obsStn}}.}
-  \item{plgemResampledStn}{\code{list}; output of function
-    \code{\link{plgem.resampledStn}}.}
+  \item{observedStn}{\code{list} containing a \code{matrix} of observed
+    PLGEM-STN values; output of function \code{\link{plgem.obsStn}}.}
+  \item{plgemResampledStn}{\code{list} containing a \code{matrix} of resampled
+    PLGEM-STN values; output of function \code{\link{plgem.resampledStn}}.}
   \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }
@@ -26,9 +26,9 @@
   p-value = min(2*quantile, 2*(1-quantile))}
 }
 \value{
-  \code{plgem.pValue} returns a matrix with the same \code{\link{dim}}ensions
-  and \code{\link{dimnames}} as the input \code{observedStn}, where each entry
-  represents the p-value of the corresponding observed PLGEM-STN value.
+  A \code{matrix} with the same \code{\link{dim}}ensions and
+  \code{\link{dimnames}} as the input \code{observedStn$PLGEM.STN}, where each
+  entry represents the p-value of the corresponding observed PLGEM-STN value.
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,
@@ -48,13 +48,14 @@
 }
 \seealso{
   \code{\link{plgem.fit}}, \code{\link{plgem.obsStn}},
-  \code{\link{plgem.resampledStn}}, \code{\link{run.plgem}}
+  \code{\link{plgem.resampledStn}}, \code{\link{plgem.deg}},
+  \code{\link{run.plgem}}
 }
 \examples{
   data(LPSeset)
   LPSfit <- plgem.fit(data=LPSeset)
   LPSobsStn <- plgem.obsStn(data=LPSeset, plgemFit=LPSfit)
-  head(LPSobsStn)
+  head(LPSobsStn[["PLGEM.STN"]])
   set.seed(123)
   LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit)
   LPSpValues <- plgem.pValue(LPSobsStn, LPSresampledStn)

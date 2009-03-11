@@ -1,15 +1,15 @@
-\name{plgem.obsStn}
-\alias{plgem.obsStn}
-\title{Computation of Observed PLGEM-STN Statistics}
+\name{plgem.resampledStn}
+\alias{plgem.resampledStn}
+\title{Computation of Resampled PLGEM-STN Statistics}
 \description{
-  This function computes observed signal-to-noise ratio (STN) values using
+  This function computes resampled signal-to-noise ratio (STN) values using
   \bold{PLGEM} fitting parameters (obtained via a call to function
   \code{\link{plgem.fit}}) to detect differential expression in an
   \code{ExpressionSet}, containing either microarray or proteomics data.
 }
 \usage{
-  plgem.obsStn(data, plgemFit, covariate=1, baselineCondition=1,
-    verbose=FALSE)
+  plgem.resampledStn(data, plgemFit, covariate=1, baselineCondition=1,
+    iterations="automatic", verbose=FALSE)
 }
 \arguments{
   \item{data}{an object of class \code{ExpressionSet}; see Details for important
@@ -24,6 +24,8 @@
     to specify the \code{baselineCondition}.}
   \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
+  \item{iterations}{number of iterations for the resampling step; if
+    \code{"automatic"} it is automatically determined.}
 }
 \details{
   The \code{phenoData} slot of the \code{ExpressionSet} given as input is
@@ -59,16 +61,19 @@
   where: \deqn{\log{(modeledSpread)}=PLGEMslope*\log{(mean)}+PLGEMintercept}{%
   ln(modeledSpread) = PLGEMslope * ln(mean) + PLGEMintercept}
 
-  \code{plgem.obsStn} determines the observed PLGEM-STN values for each gene
-  or protein in \code{data}; see References for details.
+  \code{plgem.resampledStn} determines the resampled PLGEM-STN values for each
+  gene or protein in \code{data} using a resampling approach; see References
+  for details. The number of iterations should be chosen depending on the number
+  of available replicates of the condition used for fitting the model.
 }
 \value{
   A \code{list} of two elements:
-  \item{fit}{the input \code{plgemFit}.}
-  \item{PLGEM.STN}{a \code{matrix} of observed PLGEM-STN values. The
-    \code{\link{rownames}} of this matrix are identical to the \code{rownames}
-    of \code{data}. The \code{\link{colnames}} represent the different
-    experimental conditions that were compared to the baseline.}
+  \item{RESAMPLED.STN}{\code{matrix} of resampled PLGEM-STN values, with
+    \code{\link{rownames}} identical to those in \code{data}, and
+    \code{\link{colnames}} representing the different number of replicates
+    found in the different comparisons; see References for details.}
+  \item{REPL.NUMBER}{the number of replicates found for each experimental
+  condition; see References for details.}
 }
 \references{
   Pavelka N, Pelizzola M, Vizzardelli C, Capozzoli M, Splendiani A, Granucci F,
@@ -87,13 +92,20 @@
   Norman Pavelka \email{nxp@stowers.org}
 }
 \seealso{
-  \code{\link{plgem.fit}}, \code{\link{plgem.resampledStn}},
+  \code{\link{plgem.fit}}, \code{\link{plgem.obsStn}},
   \code{\link{plgem.pValue}}, \code{\link{plgem.deg}}, \code{\link{run.plgem}}
 }
 \examples{
   data(LPSeset)
   LPSfit <- plgem.fit(data=LPSeset)
   LPSobsStn <- plgem.obsStn(data=LPSeset, plgemFit=LPSfit)
-  head(LPSobsStn[["PLGEM.STN"]])
+  set.seed(123)
+  LPSresampledStn <- plgem.resampledStn(data=LPSeset, plgemFit=LPSfit)
+  plot(density(LPSresampledStn[["RESAMPLED.STN"]], bw=0.01), col="black", lwd=2,
+    xlab="PLGEM STN values",
+    main="Distribution of observed\nand resampled PLGEM-STN values")
+  lines(density(LPSobsStn[["PLGEM.STN"]], bw=0.01), col="red")
+  legend("topright", legend=c("resampled", "observed"), col=c("black", "red"),
+    lwd=2:1)
 }
 \keyword{models}

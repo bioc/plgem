@@ -28,9 +28,9 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 	if(verbose) cat("working on baseline", baselineCondition, "...\n")
 	baseline.col <- which(condition.names == baselineCondition)
 	if (verbose) cat(colnames(dataMatrix)[baseline.col], "\n")
-	obervedStn <- array(, dim=c(nrow(dataMatrix), condition.number - 1))
-	rownames(obervedStn) <- featureNames(data)
-	colnames(obervedStn) <- condition.name[-which(condition.name == baselineCondition)]
+	observedStn <- array(, dim=c(nrow(dataMatrix), condition.number - 1))
+	rownames(observedStn) <- featureNames(data)
+	colnames(observedStn) <- condition.name[-which(condition.name == baselineCondition)]
 
 	#calculating mean and modeled spread for the baseline condition
 	mean.left <- rowMeans(dataMatrix[, baseline.col], na.rm=TRUE)
@@ -50,10 +50,10 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 		}
 		spread.right <- .plgemSpread(mean.right, plgemFit$SLOPE, plgemFit$INTERCEPT)
 		#computation of PLGEM-STN statistics
-		obervedStn[, col.counter] <- .stn(mean.left, mean.right, spread.left, spread.right)
+		observedStn[, col.counter] <- .stn(mean.left, mean.right, spread.left, spread.right)
 	}
 
 	if(verbose) cat("done with calculating PLGEM-STN statistics.\n\n")
 	gc()
-	return(obervedStn)
+	return(list("fit"=plgemFit, "PLGEM.STN"=observedStn))
 }
