@@ -1,0 +1,190 @@
+===============
+version 1.15.10
+===============
+
+o minor changes:
+--added `NEWS' file.
+
+==============
+version 1.15.9
+==============
+
+o major changes:
+--Modified output of function `plgem.obsStn' to contain also the output of
+  function `plgem.fit';
+--Modified output of functions `plgem.deg' and `run.plgem' to contain also the
+  output of functions `plgem.obsStn' and `plgem.pValue'; significant features
+  are now listed by their names only (no more associated observed STN value) as
+  a separate element of the output list, called `significant';
+--Modified functions `plgem.deg' and `plgem.pValue' to deal with the new output
+  of function `plgem.obsStn';
+--Modified function `plgem.write.summary' to deal with the new output of
+  functions `plgem.deg' and `run.plgem'.
+
+o minor changes:
+--due to more complex outputs of functions `plgem.obsStn' and
+  `plgem.resampledStn', splitted the documentation into two independent man
+  file;
+--enhanced status message printed out by function `run.plgem' about the
+  condition being selected for fitting the model;
+--added argument `prefix' to function `plgem.write.summary' to allow user to
+  specify a prefix to prepend to the file names;
+--modified documentation to reflect all above changes.
+
+
+==============
+version 1.15.8
+==============
+
+o minor changes:
+--added clear statements throughout the vignette and other package documentation
+  that two replicates are required and sufficient to fit a PLGEM (although, of
+  course, having more replicates can only improve the fitting);
+--changed URL in reference to MCP paper to point to the abstract, rather than
+  the to full text (which not everyone might have access to);
+--further improved rendering of math equations in documentation;
+--added a check for consistency of input baseline condition in functions
+  `plgem.obsStn', `plgem.resampledStn' and `run.plgem';
+--improved error messages from private check functions. 
+
+
+==============
+version 1.15.7
+==============
+
+o minor changes:
+--fixed a documentation bug that was causing a CHECK error in the manual page of
+  function `run.plgem';
+--added a private function to perform a consistency check for the input
+  ExpressionSet;
+--improved display of math expressions in PDF versions of manual pages.
+
+
+==============
+version 1.15.6
+==============
+
+o major changes:
+--replaced argument `covariateNumb' with `covariate' and allowed to specify the
+  covariate also by its name (rather than only by its number);
+--replaced argument `fit.condition' and `baseline.condition' with `fitCondition'
+  and `baselineCondition', respectively, and allowed to specify the condition
+  also by its name (rather than only by its number);
+--added arguments `trimAllZeroRows' and `zeroMeanOrSD' also to function
+  `run.plgem' to improve fitting in cases with many zero values;
+
+o minor changes:
+--updated package documentation to reflect above changes;
+--added `COVARIATE' to the value of function `plgem.fit';
+--added file `privateFunctions.R' to have small auxiliary functions all in one
+  place, improving modularity and readability of source code;
+--fixed a bug when more than one condition had the highest number of replicates
+  (argument `covariate' was not passed to function `plgem.fit');
+--overall code optimization.
+
+
+==============
+version 1.15.5
+==============
+
+o major changes:
+--added arguments `trimAllZeroRows' and `zeroMeanOrSD' to function `plgem.fit'
+  to improve fitting in cases with many zero values;
+
+o minor changes:
+--minor amendments to the vignette.
+
+
+==============
+version 1.15.4
+==============
+
+o minor changes:
+--overall reformatting of vignette for improved readability.
+
+
+==============
+version 1.15.3
+==============
+
+o major changes:
+--fixed dependencies in NAMESPACE that were causing check errors when trying to
+  load the namespace.
+
+
+==============
+version 1.15.2
+==============
+
+o minor changes:
+--replaced `.First.lib' with `.onLoad' in zzz.r file (due to adding a NAMESPACE
+  to the package);
+--updated e-mail address in man files.
+
+
+==============
+version 1.15.1
+==============
+
+o major changes:
+--added NAMESPACE.
+
+o minor changes:
+--updated references in vignette and man pages.
+
+
+==============
+version 1.11.3
+==============
+
+o minor changes:
+--added a few argument checks to generate meaningful error messages in case
+  argument `covariateNumb' was not a number, or arguments `q' or `signLev' were
+  outside the allowed range (i.e. between 0 and 1).
+
+
+==============
+version 1.11.2
+==============
+
+o minor changes:
+--fixed documentation bug (missing link to `ExpressionSet' class);
+--overall improvement of help files and vignettes.
+
+
+==============
+version 1.11.1
+==============
+
+o major changes:
+--added function `plgem.pValue' to calculate p-values for given observed STN
+  values.
+
+
+==============
+version 1.11.0
+==============
+
+o major changes:
+--corrected the object class for LPSeset, which is now an `ExpressionSet' rather
+  than an `exprSet'.
+
+
+==============
+version 1.9.1
+==============
+
+o major changes:
+--`LPSeset' dataset has been updated from `exprSet' to `ExpressionSet' class;
+--the requirement of the `conditionName' covariate in the `phenoData' of the
+  `ExpressionSet' has been eliminated; now a numeric index (`covariateNumb')
+  needs to be provided to indicate which covariate has to be used to identify
+  the different experimental conditions and set of replicated arrays on the
+  `ExpressionSet';
+--updated functions to deal with the switch from the `exprSet' to the
+  `ExpressionSet' class and on the addition of the `covariateNumb' argument;
+--added new function `plgem.write.summary',  providing a simple wrapper for
+  writing on the disk the list(s) of differentially expressed genes.
+
+o minor changes:
+--updated package documentation to reflect all above changes;
