@@ -1,4 +1,14 @@
 ===============
+version 1.15.11
+===============
+
+o minor changes:
+--added warnings in function `plgem.fit', displayed if the fitting parameters
+  are outside the normally observed range of values;
+--removed `library' calls from source code (NAMESPACE should take care of
+  package dependencies).
+
+===============
 version 1.15.10
 ===============
 

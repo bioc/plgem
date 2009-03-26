@@ -1,6 +1,5 @@
 "plgem.obsStn" <-
 function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
-	library(Biobase)
 
 	#some checks...
 	.checkExpressionSet(data)

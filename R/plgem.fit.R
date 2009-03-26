@@ -2,9 +2,6 @@
   trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE,
   plot.file=FALSE, verbose=FALSE) {
   
-	library(Biobase)
-	library(MASS)
-
 	# some checks..
 	.checkExpressionSet(data)
 
@@ -81,9 +78,14 @@
 	if(verbose) cat("fitting data and modelling points...\n")
 	MP.lm <- lm(log(as.numeric(MP.y)) ~ log(as.numeric(MP.x)))
 	slope <- as.numeric(coef(MP.lm)[2])
+	if (slope > 1) warning("PLGEM slope is higher than 1")
+	if (slope < 0.5) warning("PLGEM slope is lower than 0.5")
 	intercept <- as.numeric(coef(MP.lm)[1])
 	adj.r2.mp <- summary.lm(MP.lm)$adj.r.squared
+	if (adj.r2.mp < 0.95) warning("Adjusted r^2 is lower than 0.95")
 	data.pearson <- cor(log(stats$mean), log(stats$sd))
+	if (data.pearson < 0.85)
+    warning("Pearson correlation coefficient is lower than 0.85")
 
 	if(fittingEval) {
 		if(plot.file) {png(file="fittingEval.png", width=600, height=600)}

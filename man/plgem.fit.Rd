@@ -110,6 +110,12 @@
   relationship between the distribution of observed residuals and the normal
   distribution. A good fit normally gives a horizontal symmetric rank-plot and a
   near normal distribution of residuals.
+  
+  Warnings are issued if the fitted PLGEM slope is above 1 or under 0.5, if the
+  adjusted \eqn{r^{2}}{r^2} is below 0.95 or if the Pearson correlation
+  coefficient is below 0.85. These are the ranges of values inside which most
+  GeneChip MAS5 dataset and NSAF proteomics dataset have been empirically
+  observed to lie (see References).
 }
 \value{
   A \code{list} of six elements (see Details):

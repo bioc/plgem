@@ -13,7 +13,6 @@ function(observedStn, plgemPval, delta=0.001, verbose=FALSE) {
 	if(class(verbose)!="logical") stop("Argument 'verbose' is not of class 'logical'.")
 
 	if(verbose) cat("selecting significant DEG:")
-	library(Biobase)
 
 	#preparing...
 	condition.name <- colnames(observedStn$PLGEM.STN)
