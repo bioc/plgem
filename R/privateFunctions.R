@@ -89,3 +89,13 @@
 	(location^slope) * exp(intercept)
 }
 
+# check for file existence before saving
+.checkExistence <- function(fileName) {
+  funCall <- as.character(sys.call(-1))[1]
+  if (file.exists(fileName)) {
+    choice <- menu(c("Overwrite?", "Abort?"), graphics=TRUE,
+      title=paste("File", fileName, "already exists"))
+    if (choice == 2) stop(sQuote(funCall), " aborted.")
+  }
+}
+

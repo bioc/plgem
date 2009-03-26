@@ -4,8 +4,7 @@
   Write the Result of a PLGEM Analysis to the Working Directory
 }
 \description{
-  This function writes the list of differentially expressed genes/proteins
-  obtained via a call to either \code{\link{plgem.deg}} or
+  This function writes the output of function \code{\link{plgem.deg}} or
   \code{\link{run.plgem}} to a series of files in the current working directory.
 }
 \usage{
@@ -20,10 +19,24 @@
     running.}
 }
 \details{
-  The gene or protein lists are written to the current working directory, using
-  conveniently chosen filenames that reflect the specific comparisons that were
-  performed (i.e. which experimental condition was compared to the baseline) and
-  the specific significance threshold that were used in the DEG selection step.
+  This function writes three types of files to the current working directory:
+  
+  1) A comma-separated text file containing the PLGEM fitting parameters;
+  
+  2) A comma-separated text file containing the observed STN values and their
+  associated p-values for all performed comparisons; (STN values and p-values
+  from different comparisons appear in different columns, with column headers
+  reflecting the underlying comparison)
+  
+  3) One or more plain text files containing the identifiers of the significant
+  genes or proteins, with filenames reflecting the specific comparisons that
+  were performed (i.e. which experimental condition was compared to the
+  baseline) and the specific significance threshold that were used in the DEG
+  selection step.
+  
+  Before files are written, the function checks for existence of files with
+  identical names in the working directory and prompts the user to decide
+  whether to abort the writing process or to overwrite the existing files.
 }
 \value{
   The function returns no value. It is called for its side effect to write files

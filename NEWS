@@ -1,4 +1,15 @@
 ===============
+version 1.15.12
+===============
+
+o minor changes:
+--added a check in function `plgem.write.summary' to test for existence of files
+  with identical names in the working directory and to prompt the user to decide
+  whether to abort the writing process or to overwrite the existing files;
+--amended the documentation for function `plgem.write.summary' to update the
+  different types of files that are now written to the working directory.
+
+===============
 version 1.15.11
 ===============
 
