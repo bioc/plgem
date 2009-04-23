@@ -1,4 +1,12 @@
 ===============
+version 1.17.1
+===============
+
+o fixed bug:
+--in case that more than one condition had the highest number of replicates,
+  function `run.plgem' was picking the wrong condition to fit the model.
+
+===============
 version 1.15.13
 ===============
 
