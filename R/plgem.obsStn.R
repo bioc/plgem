@@ -3,14 +3,17 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 
 	#some checks...
 	.checkExpressionSet(data)
-	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.obsStn is not of class list")
+	if(class(plgemFit)!="list") stop(
+    "Object plgemFit in function plgem.obsStn is not of class list")
 
   covariate <- .checkCovariate(covariate, pData(data))
 	condition.names <- as.character(pData(data)[, covariate])
 
-  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(data))
+  baselineCondition <- .checkCondition(baselineCondition,
+    "baselineCondition", covariate, pData(data))
 
-	if(class(verbose)!="logical") stop("Argument verbose in function plgem.obsStn is not of class logical")
+	if(class(verbose)!="logical") stop(
+    "Argument verbose in function plgem.obsStn is not of class logical")
 	
 	if(verbose) cat("calculating observed PLGEM-STN statistics:")
 
@@ -29,7 +32,10 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 	if (verbose) cat(colnames(dataMatrix)[baseline.col], "\n")
 	observedStn <- array(, dim=c(nrow(dataMatrix), condition.number - 1))
 	rownames(observedStn) <- featureNames(data)
-	colnames(observedStn) <- condition.name[-which(condition.name == baselineCondition)]
+	#colnames(observedStn) <- condition.name[-which(condition.name == baselineCondition)]
+	colnames(observedStn) <- paste(
+    condition.name[-which(condition.name == baselineCondition)], "vs",
+    baselineCondition, sep="_")
 
 	#calculating mean and modeled spread for the baseline condition
 	mean.left <- rowMeans(dataMatrix[, baseline.col], na.rm=TRUE)
@@ -47,7 +53,8 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
     }	else {
 		  mean.right<-rowMeans(dataMatrix[, condition.col], na.rm=TRUE)
 		}
-		spread.right <- .plgemSpread(mean.right, plgemFit$SLOPE, plgemFit$INTERCEPT)
+		spread.right <- .plgemSpread(mean.right, plgemFit$SLOPE,
+      plgemFit$INTERCEPT)
 		#computation of PLGEM-STN statistics
 		observedStn[, col.counter] <- .stn(mean.left, mean.right, spread.left, spread.right)
 	}

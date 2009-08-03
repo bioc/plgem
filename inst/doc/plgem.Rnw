@@ -183,7 +183,7 @@ roughly 10 genes by chance:
 <<DEGselection,echo=TRUE>>=
 LPSdegList <- plgem.deg(observedStn=LPSobsStn, plgemPval=LPSpValues,
   delta=0.001, verbose=TRUE)
-head(LPSdegList$significant[["0.001"]][["LPS"]])
+head(LPSdegList$significant[["0.001"]][["LPS_vs_C"]])
 @
 
 Above function returns a list with a number of items that is equal to the number

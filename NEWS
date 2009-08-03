@@ -1,4 +1,22 @@
 ===============
+version 1.17.3
+===============
+
+o minor changes:
+--added information about what baseline was used to generate the observed STN
+  values in the colnames of the PLGEM.STN matrix outputted by function
+  `plgem.obsStn'.
+--added information about what baseline was used to generate the the p-values
+  in the colnames of the matrix outputted by function `plgem.pValue'.
+
+===============
+version 1.17.2
+===============
+
+o fixed bug:
+--updated LPSeset object to match new object definition of eSet in Bioconductor.
+
+===============
 version 1.17.1
 ===============
 

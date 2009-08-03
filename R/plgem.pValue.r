@@ -24,7 +24,7 @@ function(observedStn, plgemResampledStn, verbose=FALSE) {
   repl.number <- plgemResampledStn$REPL.NUMBER
   CDF <- apply(plgemResampledStn$RESAMPLED.STN, 2, ecdf)
   observedStn <- observedStn$PLGEM.STN
-  condition.name <- colnames(observedStn)
+  condition.name <- sub("_vs_.+$", "", colnames(observedStn))
   pval <- array(, dim=dim(observedStn), dimnames=dimnames(observedStn))
   
   for (i in 1:length(condition.name)) {
