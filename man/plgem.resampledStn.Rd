@@ -89,7 +89,7 @@
 \author{
   Mattia Pelizzola \email{mattia.pelizzola@gmail.com}
 
-  Norman Pavelka \email{nxp@stowers.org}
+  Norman Pavelka \email{normanpavelka@gmail.com}
 }
 \seealso{
   \code{\link{plgem.fit}}, \code{\link{plgem.obsStn}},

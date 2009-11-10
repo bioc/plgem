@@ -1,9 +1,16 @@
 ===============
+version 1.19.2
+===============
+
+o minor changes:
+--updated author contact information in man pages.
+
+===============
 version 1.19.1
 ===============
 
 o minor changes:
---updated maintainer contact information.
+--updated maintainer contact information in DESCRIPTION file.
 --improved package title and description.
 
 ===============
