@@ -1,4 +1,12 @@
 ===============
+version 1.18.2
+===============
+
+o minor changes:
+--updated author contact information in man pages.
+--added sessionInfo() at the end of vignette.
+
+===============
 version 1.18.1
 ===============
 
