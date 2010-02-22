@@ -199,6 +199,10 @@ the significantly changing genes or proteins, as defined in the
 Finally, the obtained list of DEG can be written to the current working
 directory using the \Rfunction{plgem.write.summary} function.
 
+<<sessionInfo, echo=TRUE>>=
+sessionInfo()
+@
+
 \begin{thebibliography}{}
 
 \bibitem[1]{bmc}

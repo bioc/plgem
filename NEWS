@@ -1,4 +1,13 @@
 ===============
+version 1.19.3
+===============
+
+o minor changes:
+--welcome message at package start-up is now delivered via a call to
+  `packageStartupMessage', rather than via `message'.
+--added sessionInfo() at the end of vignette.
+
+===============
 version 1.19.2
 ===============
 
