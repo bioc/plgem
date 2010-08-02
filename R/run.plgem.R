@@ -83,7 +83,7 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 		output <- plgem.deg(obs.stn, pValues, delta=signLev, verbose=Verbose)
 	}
 
-  if(writeFiles) plgem.write.summary(x = DEG.list, verbose = Verbose) # writing DEG list(s) on the disk
+  if(writeFiles) plgem.write.summary(x = output, verbose = Verbose) # writing DEG list(s) on the disk
 
 	return(output)
 }
