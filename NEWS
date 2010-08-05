@@ -1,4 +1,11 @@
 ===============
+version 1.20.1
+===============
+
+o fixed bug:
+--corrected call to `plgem.write.summary' within function `run.plgem'.
+
+===============
 version 1.19.3
 ===============
 
