@@ -88,7 +88,7 @@
     warning("Pearson correlation coefficient is lower than 0.85")
 
 	if(fittingEval) {
-		if(plot.file) {png(file="fittingEval.png", width=600, height=600)}
+		if(plot.file) png(filename="fittingEval.png", width=600, height=600)
 
 		# computation of model residuals
 		modeled.spread <- (stats$mean^slope) * (exp(intercept))

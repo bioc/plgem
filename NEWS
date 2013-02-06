@@ -1,4 +1,19 @@
 ===============
+version 1.31.1
+===============
+
+o fixed bug:
+--corrected call to `png' in function `plgem.fit' to avoid partial argument
+  match of `file' to `filename'.
+
+o minor changes:
+--improved readability of progress report outputted by `plgem.resampledStn'
+  when `verbose=TRUE'.
+--changed call to `packageStartupMessage' from an `.onLoad' to an
+  `.onAttach' hook.
+--moved source of the vignette in new subfolder `vignettes'.
+
+===============
 version 1.21.1
 ===============
 

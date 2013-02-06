@@ -2,7 +2,7 @@
 # 'plgem' package initialization
 # ==========================================================================
 
-.onLoad <- function(lib, pkg) {
+.onAttach <- function(lib, pkg) {
   pkgVersion <- packageDescription(pkg)$Version
   msg <- paste("\nWelcome to", pkg, "version", pkgVersion, "\n")
   packageStartupMessage(msg)

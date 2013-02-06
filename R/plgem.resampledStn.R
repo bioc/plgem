@@ -55,7 +55,10 @@ function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic
 		if(verbose) cat("working on cases with", repl.cases[i], "replicates...\n")
 		if(verbose) cat("     Iterations: ")
 		for (j in 1:iterations){
-			if(verbose) {if (j/20 == trunc(j/20)) {cat(j," ")} }
+			if(verbose) {
+        if (j %% 100 == 0) cat(j, " ")
+        if (j %% 1000 == 0) cat("\n")
+      }
 			#sampling column indices
 			left.col<-sample(fit.col,length(baseline.col),replace=TRUE)
 			right.col<-sample(fit.col,repl.cases[i],replace=TRUE)
