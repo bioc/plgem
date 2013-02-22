@@ -1,35 +1,48 @@
 "plgem.fit" <- function(data, covariate=1, fitCondition=1, p=10, q=0.5,
   trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE,
-  plot.file=FALSE, verbose=FALSE) {
+  plot.file=FALSE, prefix=NULL, gPar=setGpar(), verbose=FALSE) {
   
 	# some checks..
 	.checkExpressionSet(data)
-
   covariate <- .checkCovariate(covariate, pData(data))
+  fitCondition <- .checkCondition(fitCondition, "fitCondition", covariate,
+    pData(data))
+  fittingEvalFileName <- paste(as.character(prefix), "fittingEval.png", sep="_")
+  .checkExistence(fittingEvalFileName)
 
-  fitCondition <- .checkCondition(fitCondition, "fitCondition", covariate, pData(data))
-
-	if(class(p)!="numeric" && class(p)!="integer") stop("Argument 'p' is not of class 'numeric' or 'integer'")
-	if(class(q)!="numeric" && class(q)!="integer") stop("Argument 'q' is not of class 'numeric' or 'integer'")
+	if(class(p) != "numeric" && class(p) != "integer") {
+    stop("Argument 'p' is not of class 'numeric' or 'integer'")
+  }
+	if(class(q) != "numeric" && class(q) != "integer") {
+    stop("Argument 'q' is not of class 'numeric' or 'integer'")
+  }
 	if(!(q >= 0 && q <= 1)) stop("Argument 'q' is not in the range [0, 1]")
-	if(class(fittingEval)!="logical") stop("Argument 'fittingEval' is not of class 'logical'")
-	if(class(plot.file)!="logical") stop("Argument 'plot.file' is not of class 'logical'")
-	if(class(verbose)!="logical") stop("Argument 'verbose' is not of class 'logical'")
-
+	if(class(fittingEval)!="logical") {
+    stop("Argument 'fittingEval' is not of class 'logical'")
+  }
+	if(class(plot.file) != "logical") {
+    stop("Argument 'plot.file' is not of class 'logical'")
+  }
+	if(class(verbose) != "logical") {
+    stop("Argument 'verbose' is not of class 'logical'")
+  }
 	if(verbose) cat("Fitting PLGEM...\n")
 
 	condition.names <- as.character(pData(data)[, covariate])
 	if(verbose) cat("samples extracted for fitting:\n")
 	data <- data[, which(condition.names == fitCondition)]
 	if(verbose) print(pData(data))
-	if(length(sampleNames(data)) < 2) stop("At least 2 replicates needed to fit PLGEM")
-
+	if(length(sampleNames(data)) < 2) {
+    stop("At least 2 replicates needed to fit PLGEM")
+  }
+  
 	# extract data matrix and optionally trim rows containing only zero values
 	dataMatrix <- exprs(data)
   if (trimAllZeroRows) {
     allZero <- apply(dataMatrix, 1, function(z) {return(all(z==0))} )
     if (length(which(allZero))) {
-      if (verbose) cat("trimming", length(which(allZero)), "rows with only zero values.\n")
+      if (verbose) cat("trimming", length(which(allZero)),
+        "rows with only zero values.\n")
       dataMatrix <- dataMatrix[-which(allZero), ]
     }
   }
@@ -46,19 +59,23 @@
     trim = {
       toRemove <- union(which(stats$mean <= 0), which(stats$sd == 0))
       if (length(toRemove) > 0) {
-        if (verbose) cat("removing", length(toRemove), "rows with non-positive mean or zero standard deviation...\n")
+        if (verbose) cat("removing", length(toRemove),
+          "rows with non-positive mean or zero standard deviation...\n")
         stats <- stats[-toRemove, ]  
       }
     },
     replace = {
       toRemove <- which(stats$mean <= 0)
       if (length(toRemove) > 0) {
-        if (verbose) cat("replacing", length(toRemove), "non-positive means with smallest positive mean...\n")
-        stats$mean <- replace(stats$mean, stats$mean <= 0, min(stats$mean[stats$mean > 0]))
+        if (verbose) cat("replacing", length(toRemove),
+          "non-positive means with smallest positive mean...\n")
+        stats$mean <- replace(stats$mean, stats$mean <= 0,
+          min(stats$mean[stats$mean > 0]))
       }
       toRemove <- which(stats$sd == 0)
       if (length(toRemove) > 0) {
-        if (verbose) cat("replacing", length(toRemove), "zero standard deviations with smallest non-zero standard deviation...\n")
+        if (verbose) cat("replacing", length(toRemove),
+          "zero standard deviations with smallest non-zero standard deviation...\n")
         stats$sd <- replace(stats$sd, stats$sd == 0, min(stats$sd[stats$sd > 0]))
       }
     }  
@@ -88,7 +105,7 @@
     warning("Pearson correlation coefficient is lower than 0.85")
 
 	if(fittingEval) {
-		if(plot.file) png(filename="fittingEval.png", width=600, height=600)
+		if(plot.file) png(filename=fittingEvalFileName, width=600, height=600)
 
 		# computation of model residuals
 		modeled.spread <- (stats$mean^slope) * (exp(intercept))
@@ -96,34 +113,46 @@
 		maxResidual <- ceiling(max(abs(residuals)))
 
 		layout(matrix(1:4, 2, 2))
-		par(mar=c(3, 3, 3.5, 1), mgp=c(1.8, .6, 0))
+		par(mar=c(3, 3, 3.5, 1), mgp=c(1.5, .5, 0))
 
 		# contour plot of data & model fit
-		mainTitle <- paste("PLGEM parameters:\nslope = ", signif(slope,3),
-      "\nintercept = ", signif(intercept,3), sep="")
 		meanSd.kde2d <- kde2d(log(stats$mean), log(stats$sd), n=50)
+		if (is.null(gPar$minLnM)) gPar$minLnM <- min(meanSd.kde2d$x)
+ 		if (is.null(gPar$maxLnM)) gPar$maxLnM <- max(meanSd.kde2d$x)
+		if (is.null(gPar$minLnSD)) gPar$minLnSD <- min(meanSd.kde2d$y)
+ 		if (is.null(gPar$maxLnSD)) gPar$maxLnSD <- max(meanSd.kde2d$y)
 		contour(meanSd.kde2d, col=colors()[40:55], nlevels=15, xlab="ln(mean)",
-      ylab="ln(sd)", cex=0.5, main=mainTitle, cex.main=0.8)
+      ylab="ln(sd)", cex=0.5, main="Power Law Global Error Model",
+      xlim=c(gPar$minLnM, gPar$maxLnM), ylim=c(gPar$minLnSD, gPar$maxLnSD))
 		points(log(MP.x), log(MP.y), cex=2, col="black")
 		abline(intercept, slope, col="red", lwd=2)
-		xy <- par("usr")
+		
+    xy <- par("usr")
+		text(xy[1]+0.2*diff(xy[1:2]), xy[3]+0.9*diff(xy[3:4]), paste("slope =",
+      signif(slope, 3), "\nintercept =", signif(intercept, 3)), cex=0.8)
 		text(xy[1]+0.8*diff(xy[1:2]), xy[3]+0.1*diff(xy[3:4]), paste("adj. r2 =",
       signif(adj.r2.mp, 3), "\nPearson =", signif(data.pearson, 3)), cex=0.8)
 
 		# contour plot of residuals vs rank of mean
-		residuals.kde2d <- kde2d(rank(stats$mean,ties.method="first"), residuals, n=50)
+		residuals.kde2d <- kde2d(rank(stats$mean, ties.method="first"), residuals, n=50)
+		if (is.null(gPar$maxRes)) gPar$maxRes <- maxResidual
+ 		if (is.null(gPar$minRes)) gPar$minRes <- -maxResidual
 		contour(residuals.kde2d, col=colors()[40:55], nlevels=15,
-      xlab="Rank of mean", ylab="Residuals", ylim=c(-maxResidual,maxResidual),
-      cex=0.5)
+      xlab="Rank of mean", ylab="Residuals", ylim=c(gPar$minRes, gPar$maxRes),
+      main="Residuals vs. rank", cex=0.5)
 
 		# histogram of residuals
 		hist(residuals, breaks=100, xlab="Residuals", ylab="Counts",
-      xlim=c(-maxResidual, maxResidual))
+      xlim=c(gPar$minRes, gPar$maxRes))
 		box()
 
 		# qqplot of residuals distribution versus standard normal distribution
 		qqnorm(residuals, xlab="Standard Normal", ylab="Residuals", cex=0.5)
-		if(plot.file) {dev.off()}
+		if(plot.file) dev.off()
+		
+		# add a title to the outer margin of the plot
+		mtext(paste("PLGEM fitted on condition '", fitCondition, "'", sep=""),
+      line=-1.1, outer=TRUE)
 	}
 
 	# return model parameters

@@ -8,7 +8,7 @@
 \usage{
   plgem.fit(data, covariate=1, fitCondition=1, p=10, q=0.5,
     trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fittingEval=FALSE, 
-    plot.file=FALSE, verbose=FALSE)
+    plot.file=FALSE, prefix=NULL, gPar=setGpar(), verbose=FALSE)
 }
 \arguments{
   \item{data}{an object of class \code{ExpressionSet}; see Details for important
@@ -36,6 +36,12 @@
     generating a diagnostic plot.}
   \item{plot.file}{\code{logical}; if \code{TRUE}, a png file is written on the
     current working directory.}
+  \item{prefix}{optional \code{character} to use as a prefix of the file name
+    to be written.}
+  \item{gPar}{optional \code{list} of graphical parameters to define plotting
+    boundaries in PLGEM fitting evaluation plots. If left unspecified suitable
+    boundaries will be determined from the data. The recommended way to set
+    these parameters if via a call to \code{setGPar()}.}
   \item{verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }
@@ -148,8 +154,9 @@
   Norman Pavelka \email{normanpavelka@gmail.com}
 }
 \seealso{
-  \code{\link{plgem.obsStn}}, \code{\link{plgem.resampledStn}},
-  \code{\link{plgem.pValue}}, \code{\link{plgem.deg}}, \code{\link{run.plgem}}
+  \code{\link{setGpar}}, \code{\link{plgem.obsStn}},
+  \code{\link{plgem.resampledStn}}, \code{\link{plgem.pValue}},
+  \code{\link{plgem.deg}}, \code{\link{run.plgem}}
 }
 \examples{
   data(LPSeset)

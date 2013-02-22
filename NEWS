@@ -1,4 +1,18 @@
 ===============
+version 1.31.2
+===============
+
+o new features:
+--added a parameter `prefix' to function `plgem.fit' so that multiple PLGEM
+  fitting evaluation plots could be saved under different names.
+--added a file existence test in function `plgem.fit' to avoid overwriting of
+  PLGEM fitting evaluation plot files.
+--added new parameter `gPar' to function `plgem.fit' to define plotting
+  boundaries of PLGEM fitting evaluation plot.
+--added new function `setGpar' to facilitate passing graphical parameters to
+  `plgem.fit'.
+
+===============
 version 1.31.1
 ===============
 
