@@ -26,9 +26,9 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 
 	#determination of the best condition on which to fit the model
 	if (Verbose) cat("determining the condition on which to fit the model...\n")
-	if (length(which(repl.number == max(repl.number))) == 1) {
+	if (sum(repl.number == max(repl.number)) == 1) {
 		#determination of the condition with the highest number of replicates
-		fitCondition <- names(repl.number)[which(repl.number == max(repl.number))]
+		fitCondition <- names(repl.number)[repl.number == max(repl.number)]
 	} else {
 		#more than one condition has the highest number of replicates,
     #therefore the one giving the best fit is chosen
@@ -43,7 +43,7 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
       cat("adj. r^2:\n")
       print(adj.r2)
     }
-		fitCondition <- names(adj.r2)[which(adj.r2 == max(adj.r2))]
+		fitCondition <- names(adj.r2)[adj.r2 == max(adj.r2)]
 		if(length(fitCondition) > 1) {
 			fitCondition <- fitCondition[1]
       warning("PLGEM fits equally well on more than one condition. Condition ",

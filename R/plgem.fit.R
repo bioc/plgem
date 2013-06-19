@@ -30,7 +30,7 @@
 
 	condition.names <- as.character(pData(data)[, covariate])
 	if(verbose) cat("samples extracted for fitting:\n")
-	data <- data[, which(condition.names == fitCondition)]
+	data <- data[, condition.names == fitCondition]
 	if(verbose) print(pData(data))
 	if(length(sampleNames(data)) < 2) {
     stop("At least 2 replicates needed to fit PLGEM")
@@ -39,11 +39,11 @@
 	# extract data matrix and optionally trim rows containing only zero values
 	dataMatrix <- exprs(data)
   if (trimAllZeroRows) {
-    allZero <- apply(dataMatrix, 1, function(z) {return(all(z==0))} )
-    if (length(which(allZero))) {
-      if (verbose) cat("trimming", length(which(allZero)),
+    allZero <- apply(dataMatrix, 1, function(z) all(z==0) )
+    if (sum(allZero)) {
+      if (verbose) cat("trimming", sum(allZero),
         "rows with only zero values.\n")
-      dataMatrix <- dataMatrix[-which(allZero), ]
+      dataMatrix <- dataMatrix[!allZero, ]
     }
   }
 	

@@ -32,9 +32,8 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 	if (verbose) cat(colnames(dataMatrix)[baseline.col], "\n")
 	observedStn <- array(, dim=c(nrow(dataMatrix), condition.number - 1))
 	rownames(observedStn) <- featureNames(data)
-	#colnames(observedStn) <- condition.name[-which(condition.name == baselineCondition)]
 	colnames(observedStn) <- paste(
-    condition.name[-which(condition.name == baselineCondition)], "vs",
+    condition.name[!(condition.name == baselineCondition)], "vs",
     baselineCondition, sep="_")
 
 	#calculating mean and modeled spread for the baseline condition
@@ -43,15 +42,15 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 
 	#calculating mean and modeled spread for the remaining condition(s)
 	col.counter <- 0
-	for (i in (1:condition.number)[-which(condition.name == baselineCondition)]) {
+	for (i in (1:condition.number)[!(condition.name == baselineCondition)]) {
 		col.counter <- col.counter + 1
 		if(verbose) cat("working on condition", condition.name[i], "...\n")
-		condition.col<-which(condition.names == condition.name[i])
+		condition.col <- which(condition.names == condition.name[i])
 		if(verbose) cat(colnames(dataMatrix)[condition.col], "\n")
 		if(length(condition.col) == 1) {
-      mean.right<-dataMatrix[, condition.col]
+      mean.right <- dataMatrix[, condition.col]
     }	else {
-		  mean.right<-rowMeans(dataMatrix[, condition.col], na.rm=TRUE)
+		  mean.right <- rowMeans(dataMatrix[, condition.col], na.rm=TRUE)
 		}
 		spread.right <- .plgemSpread(mean.right, plgemFit$SLOPE,
       plgemFit$INTERCEPT)

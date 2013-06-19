@@ -29,7 +29,7 @@ function(observedStn, plgemPval, delta=0.001, verbose=FALSE) {
 		for (j in 1:condition.number) {
 			if(verbose) cat("	Condition = ", condition.name[j], "\n")
 			#selecting DEG
-			DEG <- geneIDs[which(plgemPval[, j] < delta[i])]
+			DEG <- geneIDs[plgemPval[, j] < delta[i]]
 			
 			if(length(DEG) == 0) {
 				DEG.list[[delta.name[i]]][[condition.name[j]]]<-NA

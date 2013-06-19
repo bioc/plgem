@@ -23,9 +23,9 @@ function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic
 	dataMatrix<-exprs(data)
 	
 	# replacing zero and negative values with minimum positive value
-	dataMatrix<-replace(dataMatrix,dataMatrix<=0,min(dataMatrix[dataMatrix>0]))
-	rowNumber<-nrow(dataMatrix)
-	baseline.col<-which(condition.names == baselineCondition)
+	dataMatrix <- replace(dataMatrix,dataMatrix<=0,min(dataMatrix[dataMatrix>0]))
+	rowNumber <- nrow(dataMatrix)
+	baseline.col <- which(condition.names == baselineCondition)
 	if (verbose) cat("baseline samples:\n")
 	if (verbose) cat(colnames(dataMatrix)[baseline.col],"\n")
 	fit.col <- which(condition.names == plgemFit$FIT.CONDITION)
@@ -35,7 +35,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic
 	#determining the number of replicates of each condition
 	repl.number <- table(condition.names)
   repl.cases <- unique(
-    repl.number[-which(names(repl.number) == baselineCondition)]
+    repl.number[!(names(repl.number) == baselineCondition)]
   )
   
 	#determination of number of iterations

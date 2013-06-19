@@ -1,4 +1,13 @@
 ===============
+version 1.33.1
+===============
+
+o minor changes:
+--removed unnecessary calls to `which' within subsetting operations, to avoid
+  potential unintended consequences pointed out by Wolfgang Huber:
+  <https://stat.ethz.ch/pipermail/bioc-devel/2013-May/004353.html>
+
+===============
 version 1.31.2
 ===============
 
