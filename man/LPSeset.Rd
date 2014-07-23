@@ -33,6 +33,7 @@
 }
 \examples{
   data(LPSeset)
+  library(Biobase)
   head(exprs(LPSeset))
 }
 \keyword{models}

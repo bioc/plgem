@@ -1,4 +1,12 @@
 ===============
+version 1.37.1
+===============
+
+o minor changes:
+--added biocViews `GeneExpression' and `MassSpectrometry'
+--moved Biobase and MASS from `Depends' to `Imports'
+
+===============
 version 1.33.1
 ===============
 
