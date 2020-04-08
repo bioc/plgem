@@ -3,18 +3,32 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 
 	#some checks
 	.checkExpressionSet(esdata)
-	if(class(signLev)!="numeric" && class(signLev)!="integer") stop("Argument 'signLev' is not of class 'numeric' or 'integer'")
-	if(!(signLev >= 0 && signLev <= 1)) stop("Argument 'signLev' is not in the range [0,1]")
-	if(class(rank)!="numeric" && class(rank)!="integer") stop("Argument 'rank' is not of class 'numeric' or 'integer'.")
+	if(!is(signLev, "numeric") && !is(signLev, "integer")) {
+    stop("Argument 'signLev' is not of class 'numeric' or 'integer'.")
+  }
+	if(!(signLev >= 0 && signLev <= 1)) {
+    stop("Argument 'signLev' is not in the range [0,1]")
+  }
+	if(!is(rank, "numeric") && !is(rank, "integer")) {
+    stop("Argument 'rank' is not of class 'numeric' or 'integer'.")
+  }
 
   covariate <- .checkCovariate(covariate, pData(esdata))
   condition.names <- as.character(pData(esdata)[, covariate])
   baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(esdata))
 
-	if(Iterations!="automatic" && class(Iterations)!="numeric" && class(Iterations)!="integer") stop("Argument 'Iterations' is neither of class 'numeric' (or 'integer') nor equal to 'automatic'.")
-	if(class(fitting.eval)!="logical") stop("Argument 'fitting.eval' is not of class 'logical'.")
-	if(class(plotFile)!="logical") stop("Argument 'plotFile' is not of class 'logical'.")
-	if(class(Verbose)!="logical") stop("Argument 'Verbose' is not of class 'logical'.")
+	if(Iterations != "automatic" && !is(Iterations, "numeric") && !is(Iterations, "integer")) {
+    stop("Argument 'Iterations' is neither of class 'numeric' (or 'integer') nor equal to 'automatic'.")
+  }
+	if(!is(fitting.eval, "logical")) {
+    stop("Argument 'fitting.eval' is not of class 'logical'.")
+  }
+	if(!is(plotFile, "logical")) {
+    stop("Argument 'plotFile' is not of class 'logical'.")
+  }
+	if(!is(Verbose, "logical")) {
+    stop("Argument 'Verbose' is not of class 'logical'.")
+  }
 
 	condition.name <- unique(condition.names)
 	condition.number <- length(condition.name)
