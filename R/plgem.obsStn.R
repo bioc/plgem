@@ -3,7 +3,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 
 	#some checks...
 	.checkExpressionSet(data)
-	if(class(plgemFit)!="list") stop(
+	if(!is(plgemFit, "list") stop(
     "Object plgemFit in function plgem.obsStn is not of class list")
 
   covariate <- .checkCovariate(covariate, pData(data))
@@ -12,7 +12,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
   baselineCondition <- .checkCondition(baselineCondition,
     "baselineCondition", covariate, pData(data))
 
-	if(class(verbose)!="logical") stop(
+	if(!is(verbose, "logical")) stop(
     "Argument verbose in function plgem.obsStn is not of class logical")
 	
 	if(verbose) cat("calculating observed PLGEM-STN statistics:")
