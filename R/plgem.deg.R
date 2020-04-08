@@ -1,16 +1,16 @@
 "plgem.deg" <-
 function(observedStn, plgemPval, delta=0.001, verbose=FALSE) {
 	#some checks
-	if(class(observedStn)!="list") {
+	if(!is(observedStn, "list")) {
     stop("Object 'observedStn' is not of class 'list'.")
   }
-	if(class(observedStn$PLGEM.STN)!="matrix") {
+	if(!is(observedStn$PLGEM.STN, "matrix")) {
     stop("Object 'observedStn$PLGEM.STN' is not of class 'matrix'.")
   }
-	if(class(plgemPval)!="matrix") stop("Object 'plgemPval' is not of class 'matrix'.")
-	if(class(delta)!="numeric") stop("Argument 'delta' is not of class 'numeric'.")
+	if(!is(plgemPval, "matrix")) stop("Object 'plgemPval' is not of class 'matrix'.")
+	if(!is(delta, "numeric")) stop("Argument 'delta' is not of class 'numeric'.")
 	if(!(all(delta>0) && all(delta<1))) stop("One or more elements in argument 'delta' is outside allowed range.")
-	if(class(verbose)!="logical") stop("Argument 'verbose' is not of class 'logical'.")
+	if(!is(verbose, "logical")) stop("Argument 'verbose' is not of class 'logical'.")
 
 	if(verbose) cat("selecting significant DEG:")
 
