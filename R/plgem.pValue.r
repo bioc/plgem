@@ -2,19 +2,19 @@
 function(observedStn, plgemResampledStn, verbose=FALSE) {
 
 	#some checks
-	if(class(observedStn)!="list") {
+	if(!is(observedStn, "list")) {
     stop("Object 'observedStn' is not of class 'list'.")
   }
-	if(class(observedStn$PLGEM.STN)!="matrix") {
+	if(!is(observedStn$PLGEM.STN, "matrix")) {
     stop("Object 'observedStn$PLGEM.STN' is not of class 'matrix'.")
   }
-	if(class(plgemResampledStn)!="list") {
+	if(!is(plgemResampledStn, "list")) {
     stop("Object 'plgemResampledStn' is not of class 'list'.")
   }
-	if(class(plgemResampledStn$RESAMPLED.STN)!="matrix") {
+	if(!is(plgemResampledStn$RESAMPLED.STN, "matrix")) {
     stop("Object 'plgemResampledStn$RESAMPLED.STN' is not of class 'matrix'.")
   }
-	if(class(verbose)!="logical") {
+	if(!is(verbose, "logical")) {
     stop("Argument 'verbose' is not of class 'logical'.")
   }
 
