@@ -9,9 +9,15 @@ function(data, plgemFit, covariate=1, baselineCondition=1, iterations="automatic
 
   baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(data))
 
-	if(class(plgemFit)!="list") stop("Object plgemFit in function plgem.resampledStn is not of class list")
-	if(iterations!="automatic" && class(iterations)!="numeric" && class(iterations)!="integer") stop("Argument iterations in function plgem.resampledStn is neither of class numeric (or integer) nor equal to 'automatic'")
-	if(class(verbose)!="logical") stop("Argument verbose in function plgem.resampledStn is not of class logical")
+	if(!is(plgemFit, "list")) {
+    stop("Object plgemFit in function plgem.resampledStn is not of class 'list'.")
+  }
+	if(iterations!="automatic" && !is(iterations, "numeric") && !is(iterations, "integer")) {
+    stop("Argument iterations in function plgem.resampledStn is neither of class numeric (or integer) nor equal to 'automatic'")
+  }
+	if(!is(verbose, "logical")) {
+    stop("Argument verbose in function plgem.resampledStn is not of class 'logical'.")
+  }
 
 	if(verbose) cat("calculating resampled PLGEM-STN statistics:")
 
