@@ -10,20 +10,20 @@
   fittingEvalFileName <- paste(as.character(prefix), "fittingEval.png", sep="_")
   .checkExistence(fittingEvalFileName)
 
-	if(class(p) != "numeric" && class(p) != "integer") {
+	if(!is(p, "numeric") && !is(p, "integer")) {
     stop("Argument 'p' is not of class 'numeric' or 'integer'")
   }
-	if(class(q) != "numeric" && class(q) != "integer") {
+	if(!is(q, "numeric") && !is(q, "integer")) {
     stop("Argument 'q' is not of class 'numeric' or 'integer'")
   }
 	if(!(q >= 0 && q <= 1)) stop("Argument 'q' is not in the range [0, 1]")
-	if(class(fittingEval)!="logical") {
+	if(!is(fittingEval, "logical")) {
     stop("Argument 'fittingEval' is not of class 'logical'")
   }
-	if(class(plot.file) != "logical") {
+	if(!is(plot.file, "logical")) {
     stop("Argument 'plot.file' is not of class 'logical'")
   }
-	if(class(verbose) != "logical") {
+	if(!is(verbose, "logical")) {
     stop("Argument 'verbose' is not of class 'logical'")
   }
 	if(verbose) cat("Fitting PLGEM...\n")
