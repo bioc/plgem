@@ -5,7 +5,7 @@
 # check input ExpressionSet
 .checkExpressionSet <- function(eset) {
   funCall <- as.character(sys.call(-1))[1]
-  if (class(eset) != "ExpressionSet") {
+  if (!is(eset, "ExpressionSet")) {
     stop("Input dataset for function ", sQuote(funCall), " is not of class ",
       sQuote("ExpressionSet"), ".")
   }
@@ -23,7 +23,7 @@
     warning("Multiple covariates specified in ", sQuote(funCall),
       ". Only the first one will be used.")
   }
-  if (class(covar) == "numeric" || class(covar) == "integer") {
+  if (is(covar, "numeric") || is(covar, "integer")) {
     if(covar < 1) stop("Argument ", sQuote("covariate"), " for function ",
       sQuote(funCall), " must be >= 1.")
     if(as.integer(covar) > ncol(pdat)) stop("Argument ", sQuote("covariate"),
@@ -31,14 +31,14 @@
       sQuote(funCall), ".")
     return(colnames(pdat)[as.integer(covar)])
   }
-  if (class(covar) == "character") {
+  if (is(covar, "character")) {
     if(!(covar %in% colnames(pdat))) stop ("covariate ", sQuote(covar),
       " is not defined in the input ExpressionSet for function ",
       sQuote(funCall), ".")
     return(covar)
   }
-  if (class(covar) != "numeric" && class(covar) != "integer" &&
-    class(covar) != "character") {
+  if (!is(covar, "numeric") && !is(covar, "integer") &&
+    !is(covar, "character")) {
     stop("Argument ", sQuote("covariate"), " for function ", sQuote(funCall),
       " must be one of class ", sQuote("numeric"), ", ", sQuote("integer"),
       " or ", sQuote("character"), ".")
@@ -54,7 +54,7 @@
     warning("Multiple conditions specified in ", sQuote(funCall),
       ". Only the first one will be used.")
   }
-  if (class(cond) == "numeric" || class(cond) == "integer") {
+  if (is(cond, "numeric") || is(cond, "integer")) {
     if(cond < 1) stop("Argument ", sQuote(argName), " for function ",
       sQuote(funCall), " must be >= 1.")
     if(as.integer(cond) > length(unique(vars))) {
@@ -64,7 +64,7 @@
     }
     return(vars[as.integer(cond)])
   }
-  if (class(cond) == "character") {
+  if (is(cond, "character")) {
     if(!(cond %in% vars)) {
       stop("condition ", sQuote(cond),
       " is not defined in the input ExpressionSet for function ",
@@ -72,7 +72,7 @@
     }
     return(cond)
   }
-  if (class(cond) != "numeric" && class(cond) != "integer" && class(cond) != "character") {
+  if (!is(cond, "numeric") && !is(cond, "integer") && !is(cond, "character")) {
     stop("Argument ", sQuote(argName), " for function ", sQuote(funCall),
       " must be one of class ", sQuote("numeric"), ", ", sQuote("integer"),
       " or ", sQuote("character"), ".")
