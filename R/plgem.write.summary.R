@@ -1,5 +1,7 @@
 "plgem.write.summary" <- function(x, prefix=NULL, verbose=FALSE) {
-  if(class(x)!="list" || !identical(names(x), c("fit", "PLGEM.STN", "p.value", "significant"))) stop("x has be the output of either the plgem.deg or the run.plgem function")
+  if(!is(x, "list") || !identical(names(x), c("fit", "PLGEM.STN", "p.value", "significant"))) {
+    stop("'x' has be the output of either the 'plgem.deg' or the 'run.plgem' function.")
+  }
   if (verbose) cat("Writing files...\n")
   fitFileName <- paste(prefix, "fit.csv", sep="_")
   .checkExistence(fitFileName)
