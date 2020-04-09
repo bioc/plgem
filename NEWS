@@ -1,4 +1,16 @@
 ===============
+version 1.59.1
+===============
+
+o bug fixes:
+--updated class-checks to avoid package failures in R 4.0, as reported in
+  https://stat.ethz.ch/pipermail/bioc-devel/2020-January/016081.html
+  and
+  http://bioconductor.org/developers/how-to/troubleshoot-build-report/#classEq
+--imported several functions into NAMESPACE from `grDevices', `graphics' and
+  `stats'
+
+===============
 version 1.37.1
 ===============
 
