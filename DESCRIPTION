@@ -1,6 +1,6 @@
 Package: plgem
 Title: Detect differential expression in microarray and proteomics datasets with the Power Law Global Error Model (PLGEM)
-Version: 1.59.1
+Version: 1.59.2
 Author: Mattia Pelizzola <mattia.pelizzola@gmail.com> and Norman
         Pavelka <normanpavelka@gmail.com>
 Description: The Power Law Global Error Model (PLGEM) has been shown to faithfully model
@@ -9,7 +9,7 @@ Description: The Power Law Global Error Model (PLGEM) has been shown to faithful
              shown to improve the detection of differentially expressed genes or proteins in
              these datasets.
 Maintainer: Norman Pavelka <normanpavelka@gmail.com>
-Imports: utils, Biobase (>= 2.5.5), MASS
+Imports: utils, Biobase (>= 2.5.5), MASS, methods
 Depends: R (>= 2.10)
 License: GPL-2
 URL: http://www.genopolis.it

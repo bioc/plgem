@@ -3,7 +3,7 @@ function(data, plgemFit, covariate=1, baselineCondition=1, verbose=FALSE) {
 
 	#some checks...
 	.checkExpressionSet(data)
-	if(!is(plgemFit, "list") stop(
+	if(!is(plgemFit, "list")) stop(
     "Object plgemFit in function plgem.obsStn is not of class list")
 
   covariate <- .checkCovariate(covariate, pData(data))

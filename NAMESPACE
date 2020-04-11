@@ -4,6 +4,6 @@ importFrom("graphics", "abline", "box", "contour", "hist", "layout",
              "mtext", "par", "points", "text")
 importFrom("stats", "coef", "cor", "ecdf", "lm", "median", "qqnorm",
              "quantile", "sd", "summary.lm")
-
+importFrom("methods", "is")
 exportPattern("^[^\\.]")
 

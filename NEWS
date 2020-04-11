@@ -1,4 +1,12 @@
 ===============
+version 1.59.2
+===============
+
+o bug fixes:
+--fixed syntax error in `plgem.obsStn'
+--imported function `is' into NAMESPACE
+
+===============
 version 1.59.1
 ===============
 
