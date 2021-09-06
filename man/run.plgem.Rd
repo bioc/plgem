@@ -12,7 +12,7 @@
   run.plgem(esdata, signLev=0.001, rank=100, covariate=1,
     baselineCondition=1, Iterations="automatic", trimAllZeroRows=FALSE,
     zeroMeanOrSD=c("replace", "trim"), fitting.eval=TRUE,
-    plotFile=FALSE, writeFiles=FALSE, Verbose=FALSE)
+    plotFile=FALSE, writeFiles=FALSE, Prefix=NULL, Verbose=FALSE)
 } 
 \arguments{
   \item{esdata}{an object of class \code{ExpressionSet}; see Details for
@@ -48,6 +48,8 @@
     file.}
   \item{writeFiles}{\code{logical}; if \code{TRUE}, the generated list of DEG is
     written on disk file(s).}
+  \item{Prefix}{optional \code{character} to use as a prefix of the file names
+    to be written if \code{writeFiles=TRUE}.}
   \item{Verbose}{\code{logical}; if \code{TRUE}, comments are printed out while
     running.}
 }

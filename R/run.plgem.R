@@ -1,5 +1,8 @@
 "run.plgem" <-
-function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iterations="automatic", trimAllZeroRows=FALSE, zeroMeanOrSD=c("replace", "trim"), fitting.eval=TRUE, plotFile=FALSE, writeFiles = FALSE, Verbose=FALSE) {
+function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1,
+         Iterations="automatic", trimAllZeroRows=FALSE,
+         zeroMeanOrSD=c("replace", "trim"), fitting.eval=TRUE, plotFile=FALSE,
+         writeFiles=FALSE, Prefix=NULL, Verbose=FALSE) {
 
 	#some checks
 	.checkExpressionSet(esdata)
@@ -15,7 +18,8 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 
   covariate <- .checkCovariate(covariate, pData(esdata))
   condition.names <- as.character(pData(esdata)[, covariate])
-  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition", covariate, pData(esdata))
+  baselineCondition <- .checkCondition(baselineCondition, "baselineCondition",
+                                       covariate, pData(esdata))
 
 	if(Iterations != "automatic" && !is(Iterations, "numeric") && !is(Iterations, "integer")) {
     stop("Argument 'Iterations' is neither of class 'numeric' (or 'integer') nor equal to 'automatic'.")
@@ -96,8 +100,9 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1, Iter
 		# DEG selection
 		output <- plgem.deg(obs.stn, pValues, delta=signLev, verbose=Verbose)
 	}
-
-  if(writeFiles) plgem.write.summary(x = output, verbose = Verbose) # writing DEG list(s) on the disk
+ 
+  # writing DEG list(s) on the disk
+  if(writeFiles) plgem.write.summary(x=output, prefix=Prefix, verbose=Verbose) 
 
 	return(output)
 }

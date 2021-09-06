@@ -148,11 +148,11 @@
 
 		# qqplot of residuals distribution versus standard normal distribution
 		qqnorm(residuals, xlab="Standard Normal", ylab="Residuals", cex=0.5)
-		if(plot.file) dev.off()
 		
 		# add a title to the outer margin of the plot
 		mtext(paste("PLGEM fitted on condition '", fitCondition, "'", sep=""),
       line=-1.1, outer=TRUE)
+		if(plot.file) dev.off()
 	}
 
 	# return model parameters
