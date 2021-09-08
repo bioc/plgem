@@ -7,9 +7,11 @@
   covariate <- .checkCovariate(covariate, pData(data))
   fitCondition <- .checkCondition(fitCondition, "fitCondition", covariate,
     pData(data))
-  fittingEvalFileName <- paste(as.character(prefix), "fittingEval.png", sep="_")
-  .checkExistence(fittingEvalFileName)
-
+  if(fittingEval & plot.file) {
+    fittingEvalFileName <- paste(as.character(prefix), "fittingEval.png", sep="_")
+    .checkExistence(fittingEvalFileName)
+  }
+  
 	if(!is(p, "numeric") && !is(p, "integer")) {
     stop("Argument 'p' is not of class 'numeric' or 'integer'")
   }

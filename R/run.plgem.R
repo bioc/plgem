@@ -75,7 +75,7 @@ function(esdata, signLev=0.001, rank=100, covariate=1, baselineCondition=1,
 	plgemFit <- plgem.fit(data=esdata, covariate=covariate,
     fitCondition=fitCondition, p=10, q=0.5, trimAllZeroRows=trimAllZeroRows,
     zeroMeanOrSD=zeroMeanOrSD[1], fittingEval=fitting.eval, plot.file=plotFile,
-    verbose=Verbose)
+    prefix=Prefix, verbose=Verbose)
 	# computing observed STN statistics
 	obs.stn<-plgem.obsStn(esdata, plgemFit, covariate, verbose=Verbose, baselineCondition=baselineCondition)
 

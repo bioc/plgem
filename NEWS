@@ -3,12 +3,23 @@ version 1.65.1
 ===============
 
 o new feature:
+--allow parameter `Prefix' in `run.plgem' to be passed down to
+  `plgem.fit' when `writeFiles=TRUE'
+
+o bug fix:
+--only check existence of `fittingEvalFileName' when both `fittingEval' and
+  `plot.file' are TRUE in `plgem.fit'
+
+===============
+version 1.65.1
+===============
+
+o new feature:
 --added parameter `Prefix' to `run.plgem' to be passed down to
   `plgem.write.summary' when `writeFiles=TRUE'
 
-o bug fixes:
+o bug fix:
 --fixed error occurring when running `run.plgem' with `plotFile=TRUE'
-
 
 ===============
 version 1.59.2
